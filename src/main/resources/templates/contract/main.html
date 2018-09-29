@@ -1,0 +1,191 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div class="layui-body" style="padding: 15px;" th:fragment="content">
+    <div class="demoTable">
+        <button class="layui-btn" data-type="addContract" sec:authorize="hasAuthority('ROLE_CONTRACT_ADD')">创建合同</button>
+        <button class="layui-btn" data-type="detailContract">查看合同详情</button>
+        <button class="layui-btn" data-type="deleteContract" sec:authorize="hasAuthority('ROLE_CONTRACT_DELETE')">删除合同</button>
+        <button class="layui-btn" data-type="editContract" sec:authorize="hasAuthority('ROLE_CONTRACT_EDIT')">编辑合同</button>
+
+        <div class="layui-inline" id="contractSearch">
+
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input layui-inline" name="companyName" placeholder="签订单位" autocomplete="off" style="margin-left: 50px">
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input layui-inline"  name="title" placeholder="合同标题" autocomplete="off" style="margin-left: 50px">
+            </div>
+        </div>
+        <button class="layui-btn" data-type="searchContract" style="margin-left: 50px">查询合同</button>
+
+    </div>
+
+    <table class="page-table" th:id="contract" th:attr="lay-filter='contract'"></table>
+
+    <!--<script type="text/html" id="barDemo">-->
+    <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+
+    <script>
+        layui.use(['table', 'jquery', 'form'], function () {
+            var table = layui.table;
+            var $ = layui.jquery;
+            var form = layui.form;
+            //方法级渲染
+            table.render({
+                id: 'contract'
+                , elem: '#contract'
+                , url: '/contract/page'
+                , where: {name: $("#username").html()}
+                , cols: [
+                    [
+                        {checkbox: true, fixed: true}
+                        , {field: 'id', title: 'ID', width: 80}
+                        , {field: 'title', title: '合同标题', width: 200}
+                        , {field: 'content', title: '合同正文', width: 200}
+                        , {field: 'companyName', title: '签订公司', width: 150}
+                        , {field: 'dateTime', title: '签订时间', width: 150}
+                        , {field: 'phone', title: '手机号', width: 150}
+                        , {field: 'amount', title: '金额', width: 80, align: 'right'}
+                    ]
+                ]
+
+                , page: true
+                , height: 570
+            });
+
+            var active = {
+                addContract: function () { //获取选中数据
+                    window.location.href = "/main?page=contract/add";
+                }
+                , detailContract: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('contract')//此处contract为table.render中基础参数id的值
+                        , data = checkStatus.data;
+                    if (data.length != 1) {
+                        layer.msg("数量不为1", {time: 2000})
+                    } else {
+                        window.location.href = "/main?page=contract/detail&detailId=" + data[0].id;
+                    }
+                }
+
+                , deleteContract: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('contract')
+                        , data = checkStatus.data;
+                    var delList = [];
+                    data.forEach(function (n, i) {
+                        delList.push(n.id);
+                    });
+                    if (delList != '') {
+                        layer.confirm('确定删除所选项吗？', function (index) {
+                            $.ajax({
+                                url: '/contract/delete',
+                                type: 'post',
+                                dataType: 'json',
+                                data: "id=" + delList,
+                                success: function (data) {
+                                    if (data.code >= 0) {
+                                        layer.msg('删除成功');
+                                        table.reload('contract', {});//刷新表格数据
+                                    } else {
+                                        layer.msg('删除失败');
+                                    }
+                                },
+                                'error': function () {
+                                    layer.msg('系统错误');
+                                }
+                            })
+                        })
+                    } else {
+                        layer.msg("数量不为1")
+                    }
+                }
+
+                , editContract: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('contract')
+                        , data = checkStatus.data;
+                    if (data.length != 1) {
+                        layer.msg("数量不为1", {time: 2000})
+                    } else {
+                        window.location.href = "/main?page=contract/edit&detailId=" + data[0].id;
+                    }
+                }
+
+
+                /* ,isAll: function(){ //验证是否全选
+                     var checkStatus = table.checkStatus('contract');
+                     layer.msg(checkStatus.isAll ? '全选': '未全选')
+                 },
+                 userAdd: function () {
+                     layer.open({
+                         type: 1
+                         , title: ['用户创建', 'font-size:18px;']
+                         , closeBtn: 1
+                         , area: ['450px', '300px']
+                         , maxmin: true  //最大最小化
+                         , id: 'LAY_layui_userForm' //设定一个id，防止重复弹出
+                         , content: $('#userForm')
+                         , resize: true
+                         , shadeClose: true
+                         // ,zIndex: layer.zIndex //重点1
+                         // ,success: function(layero){
+                         //     layer.setTop(layero); //重点2
+                         // }
+                     });
+                 }
+                */
+                //问题：searchContract没有数据传输接口？？？
+                , searchContract: function () {
+                    var companyName = $("#contractSearch input[name='companyName']").val();
+                    var title = $("#contractSearch input[name='title']").val();
+                    table.reload('contract', {   //此处contract为table基础参数id对应的值
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            companyName: companyName,
+                            title: title
+                        }
+                    });
+
+                }
+
+            };
+            form.on("submit(userFormSubmit)", function (data) {
+                $.ajax({
+                    url: '/passport/user/add',
+                    method: 'POST',
+                    data: data.field,
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            layer.closeAll();
+                            table.reload('user');
+                            layer.msg(data.msg, {time: 1000});
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+
+            table.on('rowDouble(contract)', function (obj) {
+
+                //用法：table.on('event(filter)', callback); 注：event为内置事件名，filter为容器lay-filter设定的值
+
+                //console.log(obj.tr) //得到当前行元素对象
+                // console.log(obj.data) //得到当前行数据
+                // obj.del(); //删除当前行
+                //obj.update(fields) //修改当前行数据
+
+                var data = obj.data;
+
+                window.location.href = "/main?page=contract/detail&detailId=" + data.id;
+            });
+
+            $('.layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+</div>

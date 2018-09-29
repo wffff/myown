@@ -1,0 +1,200 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="layui-body" style="padding: 15px;" th:fragment="content">
+    <!--<div class="layui-upload">-->
+        <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
+        <!--<div class="layui-upload-list">-->
+            <!--<img class="layui-upload-img" id="demo1">-->
+            <!--<p id="demoText"></p>-->
+        <!--</div>-->
+    <!--</div>-->
+    <form th:id="contract" class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">合同标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+             <textarea name="content"  id="content" rows="10" cols="80" >
+                请在此输入合同正文
+            </textarea>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">签订单位</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="companyName" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">签订时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="time" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">电话</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="phone" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">传真</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="fax" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="contactMan" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">业务员</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="saleman" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-inline">
+                    <select name="contactId" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                        <option value="1">admin</option>
+                        <option value="2">user</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">销售人员</label>
+                <div class="layui-input-inline">
+                    <select name="salemanId" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                        <option value="1">admin</option>
+                        <option value="2">user</option>
+                    </select>
+                </div>
+            </div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">金额</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="amount" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">付款方式</label>
+                <div class="layui-input-inline">
+                    <select name="payMethod" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                        <option >支付宝</option>
+                        <option >微信</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="remarks" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <button class="layui-btn" lay-submit="" lay-filter="contractSubmit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+            </div>
+        </div>
+    </form>
+    <script>
+        layui.use(['form','jquery','laydate'], function () {
+            var form =layui.form;
+            var $=layui.jquery;
+            var $=layui.jquery;
+            var laydate=layui.laydate;
+            // var upload = layui.upload;
+            // var uploadInst = upload.render({
+            //     elem: '#test1'
+            //     , url: '/uploadImg'
+            //     , before: function (obj) {
+            //         //预读本地文件示例，不支持ie8
+            //         obj.preview(function (index, file, result) {
+            //             $('#demo1').attr('src', result); //图片链接（base64）
+            //         });
+            //     }
+            //     , done: function (d) {
+            //         console.log(d);
+            //         //如果上传失败
+            //         //上传成功
+            //         // $("#approvePaymentApplyByCustomer input[name='bankSerialImage']").val(d.data.fullname);
+            //     }
+            //     , error: function () {
+            //         //演示失败状态，并实现重传
+            //         var demoText = $('#demoText');
+            //         demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+            //         demoText.find('.demo-reload').on('click', function () {
+            //             uploadInst.upload();
+            //         });
+            //     }
+            // });
+            laydate.render({
+                elem: '#date'
+            });
+
+
+
+            form.on('submit(contractSubmit)', function(data){
+                $.ajax({
+                    url: '/contract/save',
+                    method: 'POST',
+                    data: {
+                        content:CKEDITOR.instances.content.getData(),
+                        companyName:$("#contract input[name='companyName']").val(),
+                        contactMan:$("#contract input[name='contactMan']").val(),
+                        phone:$("#contract input[name='phone']").val(),
+                        fax:$("#contract input[name='fax']").val(),
+                        saleman:$("#contract input[name='saleman']").val(),
+                        amount:$("#contract input[name='amount']").val(),
+                        time:$("#contract input[name='time']").val(),
+                        payMethod:$("#contract select[name='payMethod']").val(),
+                        title:$("#contract input[name='title']").val(),
+                        remarks:$("#contract textarea[name='remarks']").val()
+                    },
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            window.location.href="/main?page=contract/main";
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+                // console.log(CKEDITOR.instances.content.getData());
+                // console.log($("#contract select[name='salemanId']").val());
+                // layer.alert(JSON.stringify(data.field), {
+                //     title: '最终的提交信息'
+                // });
+                return false;
+            });
+        });
+        CKEDITOR.replace('content');
+        CKEDITOR.config.image_previewText = ' ';
+        CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
+        CKEDITOR.config.language  = 'zh-cn';
+    </script>
+
+</div>

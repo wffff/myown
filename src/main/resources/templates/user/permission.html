@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>权限</title>
+</head>
+<body>
+<div   th:fragment="content">
+    <div class="layui-body" style="padding: 15px;">
+        <div class="layui-btn-group demoTable">
+            <button class="layui-btn" data-type="add">添加权限</button>
+            <button class="layui-btn" data-type="del">删除权限</button>
+        </div>
+        <table class="page-table" th:id="permissionAdd" th:attr="lay-filter='permissionAdd'"></table>
+    </div>
+    <div id="permission" style='display:none; '>
+        <div class="layui-form-item">
+            <div class="layui-inline" style="margin-top: 5px;">
+                <label class="layui-form-label">权限名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入权限名">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="description" autocomplete="off" class="layui-input" placeholder="请输入权限描述">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-tab-content" style="margin-left: 160px">
+            <button style="padding:0 20px; " class="layui-btn layui-btn-normal layui-btn-small" data-type="save" >保存</button>
+        </div>
+    </div>
+
+    <form id="permissionEdit" class="layui-form" action="" style='display:none; '>
+        <input type="hidden" name="id">
+        <div class="layui-form-item">
+            <div class="layui-inline" style="margin-top: 5px;">
+                <label class="layui-form-label">权限名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入权限名">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="description" autocomplete="off" class="layui-input" placeholder="请输入权限描述">
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-content" style="margin-left: 160px">
+            <button style="padding:0 20px; " class="layui-btn layui-btn-normal" lay-submit="" lay-filter="edit">保存
+            </button>
+        </div>
+    </form>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+    </script>
+    <script>
+        layui.use(['table','jquery','form'], function () {
+            var $ = layui.jquery;
+            var form = layui.form;
+            var table = layui.table;
+            //方法级渲染
+            table.render({
+                id: 'permissionAdd'
+                , elem: '#permissionAdd'
+                , url: '/permission/page'
+                ,toolbar: true
+                , cols: [
+                    [
+                        {checkbox: true, fixed: true}
+                        , {field: 'id', title: 'ID', width: 80}
+                        , {field: 'name', title: '权限', width: 200}
+                        , {field: 'description', title: '描述', width: 150}
+                        , {title: '操作',fixed: 'right', width: 150, toolbar:'#barDemo', align: 'center',}
+                    ]
+                ]
+                , page: true
+                , height: 570
+            });
+            var active = {
+                add: function(){ //获取选中数据
+                    layer.open({
+                        type: 1,
+                        title: '增加权限',
+                        skin: 'layui-layer-attachment', //加上边框
+                        content: $('#permission'),
+                        shadeClose: true
+                        , area: ['500px', '350px']
+                    });
+                },
+
+                del: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('permissionAdd')
+                        , data = checkStatus.data;
+                    var delList = [];
+                    data.forEach(function (n, i) {
+                        delList.push(n.id);
+                    });
+                    if (delList != '') {
+                        layer.confirm('确定删除所选项吗？', function (index) {
+                            $.ajax({
+                                url: '/permission/delete',
+                                type: 'post',
+                                dataType: 'json',
+                                data: "id=" + delList,
+                                success: function (data) {
+                                    if (data.code >= 0) {
+                                        layer.msg('删除成功');
+                                        table.reload('permissionAdd', {});//刷新表格数据
+                                    } else {
+                                        layer.msg('删除失败');
+                                    }
+                                },
+                                'error': function () {
+                                    layer.msg('系统错误');
+                                }
+                            })
+                        })
+                    } else {
+                        layer.msg("数量不为1")
+                    }
+                },
+
+                save: function () {
+                    $.ajax({
+                        url: '/permission/save',
+                        data: {
+                            name:$("#permission input[name='name']").val(),
+                            description:$("#permission input[name='description']").val()},
+                        method: 'POST',
+                        success: function (data) {
+                            if (data.code >= 0) {
+                                layer.closeAll();
+                                layer.msg("保存成功");
+                                table.reload('permissionAdd',{})
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                }
+
+            };
+            table.on('tool(permissionAdd)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                if (layEvent === 'edit') {
+                    $("#permissionEdit input[name='id']").val(data.id);
+                    $("#permissionEdit input[name='name']").val(data.name);
+                    $("#permissionEdit input[name='description']").val(data.description);
+                    layer.open({
+                        type: 1
+                        , title: ['编辑', 'font-size:18px;']
+                        , closeBtn: 1
+                        , area: ['450px', '300px']
+                        , maxmin: true  //最大最小化
+                        , content: $('#permissionEdit')
+                        , resize: true
+                        , shadeClose: true
+                    });
+                }
+
+            });
+            form.on("submit(edit)", function (data) {
+                $.ajax({
+                    url: '/permission/edit',
+                    method: 'POST',
+                    data: data.field,
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            layer.closeAll();
+                            table.reload('permissionAdd',{})
+                            layer.msg(data.msg, {time: 1000});
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('.layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

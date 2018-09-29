@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:postgresql://47.96.92.163:5432/snkj
+      username: postgres
+      password: 123
+      driver-class-name: org.postgresql.Driver
+      initial-size: 1
+      max-active: 100
+      min-idle: 1
+      max-wait: 60000
+      pool-prepared-statements: false
+      max-open-prepared-statements: 20
+      validation-query: SELECT 1
+      validation-query-timeout: 5000
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      ##################################################
+      # Spring监控配置，配置_Druid和Spring关联监控配置
+      aop-patterns: cn.snkj.repository.*
+
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    generate-ddl: false
+    # fix SQLFeatureNotSupportedException in LobCreatorBuilderImpl
+    properties.hibernate.jdbc.lob.non_contextual_creation: true
+    # fix Hibernate Slow to Acquire Postgres Connection
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    properties.hibernate.jdbc.use_get_generated_keys: true
+    show-sql: false
+    hibernate.ddl-auto: none
+    open-in-view: true
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+server:
+  port: 80
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /

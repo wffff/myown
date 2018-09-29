@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>注册</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="layui-body" style="padding: 15px;">
+        <div class="layui-btn-group demoTable">
+            <button class="layui-btn" sec:authorize="hasAuthority('ROLE_USER_ADD_NEW')" data-type="addNew">创建新用户</button>
+            <button class="layui-btn" data-type="add">增加用户</button>
+            <button class="layui-btn" data-type="del">删除用户</button>
+            <button class="layui-btn" data-type="grant">分配角色</button>
+        </div>
+        <table class="page-table" th:id="userAdd" th:attr="lay-filter='userAdd'"></table>
+    </div>
+    <form id="user" style='display:none; ' action="" class="layui-form">
+        <input type="hidden" name="uid">
+        <div class="layui-form-item">
+            <div class="layui-inline" style="margin-top: 5px;">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" id="username" lay-verify="required" autocomplete="off"
+                           class="layui-input" placeholder="请输入用户名">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">全称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="fullname" autocomplete="off" placeholder="请输入全称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">组织</label>
+                <div class="layui-input-inline">
+                    <select name="organizationId" lay-verify="required" lay-search="">
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-content" style="margin-left: 160px">
+            <button style="padding:0 20px; " class="layui-btn layui-btn-normal" lay-submit="" lay-filter="save">保存
+            </button>
+        </div>
+    </form>
+    <form id="userNew" style='display:none; ' action="" class="layui-form">
+        <input type="hidden" name="uid">
+        <div class="layui-form-item">
+            <div class="layui-inline" style="margin-top: 5px;">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" lay-verify="required" autocomplete="off"
+                           class="layui-input" placeholder="请输入用户名">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">全称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="fullname" autocomplete="off" placeholder="请输入全称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-tab-content" style="margin-left: 160px">
+            <button style="padding:0 20px; " class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveNew">保存
+            </button>
+        </div>
+    </form>
+    <form id="infoEdit" class="layui-form" action="" style='display:none; '>
+        <input type="hidden" name="id">
+        <div class="layui-form-item">
+            <div class="layui-inline" style="margin-top: 5px;">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" lay-verify="required" autocomplete="off" class="layui-input"
+                           placeholder="请输入用户名">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">全称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="fullname" autocomplete="off" placeholder="请输入全称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-tab-content" style="margin-left: 160px">
+            <button style="padding:0 20px; " class="layui-btn layui-btn-normal" lay-submit="" lay-filter="edit">保存
+            </button>
+        </div>
+    </form>
+
+    <div id="roleForm" style='display:none; '>
+        <input type="hidden" id="userId">   <!-- 怎么获得???? 通过$("#permissionGrantId").val(data[0].id)为其赋值，值为选中的角色的id-->
+        <table class="page-table" th:id="role" th:attr="lay-filter='role'"></table>
+    </div>
+
+    <script type="text/html" id="switchTpl">
+        <input type="checkbox" name="enabled" value="{{d.id}}" lay-skin="switch" lay-text="是|否"
+               lay-filter="grantBtn" {{ d.enabled ? 'checked' : ''}} /><!-- d.enabled?? d.id?是所选权限的id??-->
+    </script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+    </script>
+    <script>
+        layui.use(['table', 'jquery', 'form'], function () {
+            var $ = layui.jquery;
+            var form = layui.form;
+            var table = layui.table;
+            //方法级渲染
+            var active = {
+                addNew:function(){
+                    layer.open({
+                        type: 1,
+                        title: '增加用户',
+                        skin: 'layui-layer-attachment', //加上边框
+                        content: $('#userNew'),
+                        shadeClose: true
+                        , area: ['500px', '400px']
+                    });
+                },
+                add: function () {
+                    $.ajax({
+                        url: '/organization/getMyOrganization',
+                        success: function (data) {
+                            if (data.code >= 0) {
+                                var d = data.data;
+                                for (var i = 0; i < d.length; i++) {
+                                    $("#user select[name='organizationId']").append("<option value=" + d[i].id + ">" + d[i].name + "</option>");
+                                }
+                                form.render();
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.msg("无此权限");
+                        }
+                    });
+                    layer.open({
+                        type: 1,
+                        title: '增加用户',
+                        skin: 'layui-layer-attachment', //加上边框
+                        content: $('#user'),
+                        shadeClose: true
+                        , area: ['500px', '400px']
+                    });
+                },
+                del: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('userAdd')
+                        , data = checkStatus.data;
+                    var delList = [];
+                    data.forEach(function (n, i) {
+                        delList.push(n.id);
+                    });
+                    if (delList != '') {
+                        layer.confirm('确定删除所选项吗？', function (index) {
+                            $.ajax({
+                                url: '/user/delete',
+                                type: 'post',
+                                dataType: 'json',
+                                data: "id=" + delList,
+                                success: function (data) {
+                                    if (data.code >= 0) {
+                                        layer.msg('删除成功');
+                                        table.reload('userAdd', {});//刷新表格数据
+                                    } else {
+                                        layer.msg('删除失败');
+                                    }
+                                },
+                                'error': function () {
+                                    layer.msg('系统错误');
+                                }
+                            })
+                        })
+                    } else {
+                        layer.msg("数量不为1")
+                    }
+                },
+
+                //点击分配角色按钮触发
+                grant: function () {
+                    //获取当前所要分配角色权限的user的id
+                    var checkStatus = table.checkStatus('userAdd')
+                        , data = checkStatus.data;
+                    if (data.length == 1) {
+                        //不能一次选中多个并同时为多个user分配角色权限，要判断当前所选是不是一条数据,若是，获取当前所选user的id
+                        $("#userId").val(data[0].id);
+                        //打开弹框
+                        layer.open({
+                            type: 1,
+                            title: ['分配角色', 'font-size:18px;'],
+                            closeBtn: 1,
+                            content: $('#roleForm'),
+                            shadeClose: true
+                            , area: ['1200px', '700px']
+                            , maxmin: true  //最大最小化
+                            , id: 'LAY_layui_roleForm' //设定一个id，防止重复弹出
+                            , resize: true
+                        });
+                        //渲染角色table
+                        table.render({
+                            id: 'role'
+                            , elem: '#role'
+                            , url: '/role/findAll'  //
+                            , where: {id: data[0].id}
+                            , cols: [
+                                [
+                                    //{checkbox: true, fixed: true}
+                                    {field: 'name', title: '角色名', width: 200}
+                                    , {field: 'description', title: '描述', width: 150}
+                                    , {field: 'enabled', title: '授权', width: 85, templet: '#switchTpl'}
+                                ]
+                            ]
+                            , height: 570
+                        });
+
+                    }
+
+                }
+            };
+            form.on("submit(save)", function (data) {
+                $.ajax({
+                    url: '/user/save',
+                    method: 'POST',
+                    data: {
+                        username: $("#user input[name='username']").val(),
+                        password: $("#user input[name='password']").val(),
+                        fullname: $("#user input[name='fullname']").val(),
+                        organizationId: $("#user select[name='organizationId']").val()
+                    },
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            layer.closeAll();
+                            layer.msg("保存成功");
+                            table.reload('userAdd', {})
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg("无此权限");
+                    }
+                });
+                return false;
+            });
+            form.on("submit(saveNew)", function (data) {
+                $.ajax({
+                    url: '/user/saveNew',
+                    method: 'POST',
+                    data: data.field,
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            layer.closeAll();
+                            layer.msg("保存成功");
+                            table.reload('userAdd', {})
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg("无此权限");
+                    }
+                });
+                return false;
+            });
+            form.on('switch(grantBtn)', function (obj) {
+                $.ajax({
+                    url: '/role/grant',
+                    data: {
+                        userId: $("#userId").val(),
+                        grant: obj.elem.checked,
+                        roleId: this.value
+                    },
+                    success: function (res) {
+                        if (res.code >= 0) {
+                            layer.tips('已' + (obj.elem.checked ? '' : '取消') + '授权',
+                                obj.othis, {zIndex: layer.zIndex});
+                        } else {
+                            layer.msg(res.msg, {zIndex: layer.zIndex})
+                        }
+                    }
+                });
+            });
+
+            table.render({
+                id: 'userAdd'
+                , elem: '#userAdd'
+                , url: '/user/page'
+                , toolbar: true
+                , cols: [
+                    [
+                        {checkbox: true, fixed: true}
+                        , {field: 'id', title: 'ID', width: 80}
+                        , {field: 'username', title: '用户名', width: 200}
+                        , {field: 'fullname', title: '全称', width: 150}
+                        , {field: 'organizationName', title: '组织', width: 150}
+                        , {
+                        //field: 'field',
+                        title: '操作',
+                        fixed: 'right',
+                        width: 150,
+                        toolbar: '#barDemo',
+                        align: 'center',
+                    }
+                    ]
+                ]
+                , page: true
+                , height: 570
+            });
+
+            table.on('tool(userAdd)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                if (layEvent === 'edit') {
+                    $("#infoEdit input[name='id']").val(data.id);
+                    $("#infoEdit input[name='username']").val(data.username);
+                    $("#infoEdit input[name='password']").val(data.password);
+                    $("#infoEdit input[name='fullname']").val(data.fullname);
+                    layer.open({
+                        type: 1
+                        , title: ['编辑', 'font-size:18px;']
+                        , closeBtn: 1
+                        , area: ['450px', '300px']
+                        , maxmin: true  //最大最小化
+                        , content: $('#infoEdit')
+                        , resize: true
+                        , shadeClose: true
+                    });
+                }
+
+            });
+            form.on("submit(edit)", function (data) {
+                $.ajax({
+                    url: '/user/edit',
+                    method: 'POST',
+                    data: data.field,
+                    // data: {
+                    //     id: $("#infoEdit input[name='id']").val(),
+                    //     username: $("#infoEdit input[name='username']").val(),
+                    //     password: $("#infoEdit input[name='password']").val(),
+                    //     fullname: $("#infoEdit input[name='fullname']").val(),
+                    // },
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            layer.closeAll();
+                            table.reload('userAdd', {})
+                            layer.msg(data.msg, {time: 1000});
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+
+
+            $('.layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

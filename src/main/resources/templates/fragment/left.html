@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="left">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <li class="layui-nav-item">
+                <a sec:authorize="hasAuthority('ROLE_DEVICE_MANAGE')" class="" href="javascript:;">设备管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a sec:authorize="hasAuthority('ROLE_DEVICE_MAIN')" th:href="@{/main?page=device/main}">设备</a></dd>
+                    <!--<dd><a sec:authorize="hasAuthority('ROLE_USER_ADD')" th:href="@{/main?page=user/register}">注册</a></dd>-->
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a sec:authorize="hasAuthority('ROLE_CONTRACT_MANAGE')" class="" href="javascript:;">合同管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a sec:authorize="hasAuthority('ROLE_CONTRACT_MAIN')" th:href="@{/main?page=contract/main}">合同</a></dd>
+                    <!--<dd><a sec:authorize="hasAuthority('ROLE_USER_ADD')" th:href="@{/main?page=user/register}">注册</a></dd>-->
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a sec:authorize="hasAuthority('ROLE_RESOURCE_MANAGE')" class="" href="javascript:;">权限管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_USER')" th:href="@{/main?page=user/register }">用户</a></dd>
+                    <dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_ROLE')" th:href="@{/main?page=user/role}">角色</a ></dd>
+                    <dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_PERMISSION')" th:href="@{/main?page=user/permission }">权限</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">组织管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{/main?page=organization/main}">组织</a></dd>
+                    <!--<dd><a sec:authorize="hasAuthority('ROLE_USER_ADD')" th:href="@{/main?page=user/register}">注册</a></dd>-->
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+</html>

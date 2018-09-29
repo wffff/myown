@@ -1,7 +1,7 @@
 spring:
   datasource:
     druid:
-      url: jdbc:postgresql://47.96.92.163:5432/snkj
+      url: jdbc:postgresql://118.25.193.38:5432/wanggoudan
       username: postgres
       password: 123
       driver-class-name: org.postgresql.Driver
@@ -20,7 +20,7 @@ spring:
       min-evictable-idle-time-millis: 300000
       ##################################################
       # Spring监控配置，配置_Druid和Spring关联监控配置
-      aop-patterns: cn.snkj.repository.*
+      aop-patterns: cn.wanggoudan.repository.*
 
   mvc:
     static-path-pattern: /static/**

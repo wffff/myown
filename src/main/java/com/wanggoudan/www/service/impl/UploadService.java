@@ -39,12 +39,12 @@ public class UploadService implements IUploadService {
 
         try {
             file.transferTo(dest);
-            String url = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length());
+            String url = fileName.substring(fileName.lastIndexOf("/") + 1);
             Map m = new HashMap();
             m.put("code", 0);
             m.put("uploaded", 1);
             m.put("fileName", file.getOriginalFilename());
-            m.put("url", "http://localhost/file/download/" + url);
+            m.put("url", "http://www.wanggoudan.cn/file/download/" + url);
             return m;
         } catch (IOException e) {
             e.printStackTrace();

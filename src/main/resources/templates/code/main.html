@@ -1,0 +1,143 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div class="layui-body" style="padding: 15px;" th:fragment="content">
+    <div class="demoTable">
+        <button class="layui-btn" data-type="addCode" sec:authorize="hasAuthority('ROLE_CODE_ADD')">创建代码</button>
+        <button class="layui-btn" data-type="editCode" sec:authorize="hasAuthority('ROLE_CODE_EDIT')">编辑代码</button>
+        <button class="layui-btn" data-type="deleteCode" sec:authorize="hasAuthority('ROLE_CODE_DELETE')">删除代码
+        <button class="layui-btn" data-type="detailCode">查看代码详情</button>
+        </button>
+
+        <div class="layui-inline" id="codeSearch">
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input layui-inline" name="title" placeholder="标题" autocomplete="off"
+                       style="margin-left: 50px">
+            </div>
+        </div>
+        <button class="layui-btn" data-type="searchCode" style="margin-left: 50px">查询</button>
+
+    </div>
+
+    <table class="page-table" th:id="code" th:attr="lay-filter='code'"></table>
+
+    <script>
+        layui.use(['table', 'jquery', 'form'], function () {
+            var table = layui.table;
+            var $ = layui.jquery;
+            var form = layui.form;
+            //方法级渲染
+            table.render({
+                id: 'code'
+                , elem: '#code'
+                , url: '/code/page'
+                , cols: [
+                    [
+                        {type: 'radio'}
+                        , {field: 'id', title: 'ID', width: 80}
+                        , {field: 'title', title: '合同标题', width: 200}
+                        , {field: 'content', title: '合同正文', width: 200}
+                    ]
+                ]
+
+                , page: true
+                , height: 700
+            });
+
+            var active = {
+                addCode: function () { //获取选中数据
+                    window.location.href = "/main?page=code/add";
+                }
+                , detailCode: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('code')
+                        , data = checkStatus.data;
+                    window.location.href = "/main?page=code/detail&detailId=" + data[0].id;
+                }
+
+                , deleteCode: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('code')
+                        , data = checkStatus.data;
+                    layer.confirm('确定删除所选项吗？', function (index) {
+                        $.ajax({
+                            url: '/code/delete',
+                            type: 'post',
+                            dataType: 'json',
+                            data: "id=" + data[0].id,
+                            success: function (data) {
+                                if (data.code >= 0) {
+                                    layer.msg('删除成功');
+                                    table.reload('code', {});//刷新表格数据
+                                } else {
+                                    layer.msg('删除失败');
+                                }
+                            },
+                            'error': function () {
+                                layer.msg('系统错误');
+                            }
+                        })
+                    })
+                }
+
+                , editCode: function () { //获取选中数目
+                    var checkStatus = table.checkStatus('code')
+                        , data = checkStatus.data;
+                    window.location.href = "/main?page=code/edit&detailId=" + data[0].id;
+                }
+
+
+                /* ,isAll: function(){ //验证是否全选
+                     var checkStatus = table.checkStatus('code');
+                     layer.msg(checkStatus.isAll ? '全选': '未全选')
+                 },
+                 userAdd: function () {
+                     layer.open({
+                         type: 1
+                         , title: ['用户创建', 'font-size:18px;']
+                         , closeBtn: 1
+                         , area: ['450px', '300px']
+                         , maxmin: true  //最大最小化
+                         , id: 'LAY_layui_userForm' //设定一个id，防止重复弹出
+                         , content: $('#userForm')
+                         , resize: true
+                         , shadeClose: true
+                         // ,zIndex: layer.zIndex //重点1
+                         // ,success: function(layero){
+                         //     layer.setTop(layero); //重点2
+                         // }
+                     });
+                 }
+                */
+                , searchCode: function () {
+                    var title = $("#codeSearch input[name='title']").val();
+                    table.reload('code', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            title: title
+                        }
+                    });
+
+                }
+
+            };
+
+            table.on('rowDouble(code)', function (obj) {
+
+                //用法：table.on('event(filter)', callback); 注：event为内置事件名，filter为容器lay-filter设定的值
+
+                //console.log(obj.tr) //得到当前行元素对象
+                // console.log(obj.data) //得到当前行数据
+                // obj.del(); //删除当前行
+                //obj.update(fields) //修改当前行数据
+
+                var data = obj.data;
+
+                window.location.href = "/main?page=code/detail&detailId=" + data.id;
+            });
+
+            $('.layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+</div>

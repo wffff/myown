@@ -1,0 +1,81 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="layui-body" style="padding: 15px;">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>编辑</legend>
+        </fieldset>
+        <form th:id="codeForm" class="layui-form" action="">
+            <input type="hidden" id="id" th:value="${detailId}">
+            <div class="layui-form-item">
+                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-item">
+             <textarea name="code" id="code">
+            </textarea>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <button class="layui-btn" lay-submit="" lay-filter="codeSubmit">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        layui.use(['form', 'jquery', 'table', 'upload'], function () {
+            var form = layui.form;
+            var $ = layui.jquery;
+            var laydate = layui.laydate;
+            var table = layui.table;
+            var upload = layui.upload;
+
+            $.ajax({
+                url: '/code/detail',
+                data: {id: $('#id').val()},
+                method: 'POST',
+                success: function (data) {
+                    var d = data.data;
+                    if (data.code >= 0) {
+                        $("#codeForm input[name='title']").val(d.title);
+                        CKEDITOR.instances.code.setData(d.content);
+                        form.render();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+            $('.layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            form.on('submit(codeSubmit)', function (data) {
+                $.ajax({
+                    url: '/code/update',
+                    method: 'POST',
+                    data: {
+                        id: $('#id').val(),
+                        content: CKEDITOR.instances.code.getData(),
+                        title: $("#codeForm input[name='title']").val(),
+                    },
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            window.location.href = "/main?page=code/main";
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+
+        CKEDITOR.replace('code');
+        CKEDITOR.config.image_previewText = ' ';
+        CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
+        CKEDITOR.config.language = 'zh-cn';
+        CKEDITOR.config.height = '500px';
+    </script>
+
+</div>

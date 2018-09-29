@@ -12,9 +12,9 @@
                 </dl>
             </li>
             <li class="layui-nav-item">
-                <a sec:authorize="hasAuthority('ROLE_CONTRACT_MANAGE')" class="" href="javascript:;">合同管理</a>
+                <a sec:authorize="hasAuthority('ROLE_CODE_MANAGE')" class="" href="javascript:;">代码管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a sec:authorize="hasAuthority('ROLE_CONTRACT_MAIN')" th:href="@{/main?page=contract/main}">合同</a></dd>
+                    <dd><a sec:authorize="hasAuthority('ROLE_CODE_MANAGE')" th:href="@{/main?page=code/main}">代码</a></dd>
                     <!--<dd><a sec:authorize="hasAuthority('ROLE_USER_ADD')" th:href="@{/main?page=user/register}">注册</a></dd>-->
                 </dl>
             </li>

@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="layui-body" style="padding: 15px;" th:fragment="content">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>创建</legend>
+    </fieldset>
+
+    <form th:id="codeForm" class="layui-form" action="">
+        <div class="layui-form-item">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题"
+                   class="layui-input">
+        </div>
+        <div class="layui-form-item">
+             <textarea name="code" id="code">
+            </textarea>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <button class="layui-btn" lay-submit="" lay-filter="codeSubmit">立即提交</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        layui.use(['form', 'jquery'], function () {
+            var form = layui.form;
+            var $ = layui.jquery;
+
+            form.on('submit(codeSubmit)', function (data) {
+                $.ajax({
+                    url: '/code/save',
+                    type: 'post',
+                    data: {
+                        title: $("#codeForm input[name='title']").val(),
+                        content: CKEDITOR.instances.code.getData(),
+                    },
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            window.location.href = "/main?page=code/main";
+                        }else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (e) {
+                    }
+                });
+                return false;
+            });
+        });
+        CKEDITOR.replace('code');
+        CKEDITOR.config.image_previewText = ' ';
+        CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
+        CKEDITOR.config.language = 'zh-cn';
+        CKEDITOR.config.height = '500px';
+    </script>
+
+</div>

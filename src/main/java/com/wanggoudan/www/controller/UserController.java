@@ -5,6 +5,7 @@ import com.wanggoudan.www.baseconfig.BasePage;
 import com.wanggoudan.www.baseconfig.ReturnMessage;
 import com.wanggoudan.www.entity.UserEntity;
 import com.wanggoudan.www.service.IUserService;
+import com.wanggoudan.www.service.impl.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,22 @@ import java.util.List;
 public class UserController {
     @Resource
     private IUserService iUserService;
+    @Resource
+    private UserService userService;
 
+    @RequestMapping("getInfo")
+    @ResponseBody
+    public UserEntity getInfo(String username,String fullname){
+        UserEntity byUsername = iUserService.findByUsername(username);
+        if (byUsername==null){
+            UserEntity userEntity=new UserEntity();
+            userEntity.setUsername(username);
+            userEntity.setFullname(fullname);
+            byUsername= iUserService.save(userEntity);
+        }
+        byUsername=userService.loadUserByUsername(byUsername.getUsername());
+        return byUsername;
+    }
     @RequestMapping("save")
     @ResponseBody
     public ReturnMessage<UserEntity> save(String username, String password, String fullname, Integer organizationId) {

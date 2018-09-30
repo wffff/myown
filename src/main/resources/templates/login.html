@@ -1,49 +1,67 @@
-<!--Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>圣能后台</title>
-    <!-- Custom Theme files -->
-    <link rel="stylesheet" th:href="@{/static/login/css/style.css}">
-    <!-- Custom Theme files -->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="后台登录" />
-    <!--Google Fonts-->
-    <!--<link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    --><!--Google Fonts-->
-</head>
-<body>
-<!--header start here-->
-<div class="login-form">
-    <div class="top-login">
-        <span><img th:src="@{/static/login/images/group.png}" alt=""/></span>
-    </div>
-    <h1>登录</h1>
-    <div class="login-top">
-        <form th:action="@{/login}" th:method="post">
-            <div class="login-ic">
-                <i ></i>
-                <input type="text" name="username"   onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'User name';}"/>
-                <div class="clear"> </div>
-            </div>
-            <div class="login-ic">
-                <i class="icon"></i>
-                <input type="password" name="password"   onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'password';}"/>
-                <div class="clear"> </div>
-            </div>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <style>
 
-            <div class="log-bwn">
-                <input type="submit"  value="Login" >
+        .window {
+
+            width: 400px;
+
+            position: absolute;
+
+            margin-left: -200px;
+
+            margin-top: -80px;
+
+            top: 50%;
+
+            left: 50%;
+
+            display: block;
+
+            z-index: 2000;
+
+            background: #fff;
+
+            padding: 0 0;
+
+        }
+
+    </style>
+
+</head>
+<body style="background: #f1f1f1;">
+<div class="window">
+    <form class="layui-form" method="post">
+        <div class="layui-form-item" style="margin-right: 100px;margin-top: 20px;">
+            <label class="layui-form-label">用户名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名"
+                       autocomplete="off"
+                       class="layui-input">
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <input type="submit" class="layui-btn" value="登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录"/>
+                <a class="layui-btn" href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101483590&redirect_uri=http://www.wanggoudan.cn/qq/return_url&state=test" >QQ登录</a>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label th:if="${param.error}" class="layui-form-label">用户名或密码不正确</label>
+            <label th:if="${param.logout}" class="layui-form-label">已登出</label>
+        </div>
+    </form>
 </div>
-<!--header start here-->
 </body>
 </html>

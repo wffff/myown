@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,7 +32,7 @@ public class CodeController {
     @RequestMapping("save")
     @ResponseBody
     public ReturnMessage<CodeEntity> save(String title, String content) {
-        if (!RegexUtils.notNull(title)||!RegexUtils.notNull(content)){
+        if (!RegexUtils.notNull(title) || !RegexUtils.notNull(content)) {
             return ReturnMessage.failed("请输入标题或正文");
         }
         CodeEntity c = iCodeService.save(title, content);
@@ -47,7 +46,7 @@ public class CodeController {
     @RequestMapping("update")
     @ResponseBody
     public ReturnMessage<CodeEntity> update(Integer id, String title, String content) {
-        if (!RegexUtils.notNull(title)||!RegexUtils.notNull(content)){
+        if (!RegexUtils.notNull(title) || !RegexUtils.notNull(content)) {
             return ReturnMessage.failed("请输入标题或正文");
         }
         CodeEntity c = iCodeService.update(id, title, content);

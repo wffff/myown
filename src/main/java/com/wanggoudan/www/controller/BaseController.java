@@ -2,7 +2,9 @@ package com.wanggoudan.www.controller;
 
 import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
 import com.wanggoudan.www.service.IUploadService;
+import com.wanggoudan.www.service.IUserService;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.security.Principal;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Danny on 2018/8/21.
@@ -47,7 +50,7 @@ public class BaseController {
         if (null != detailId) {
             model.addAttribute("detailId", detailId);
         }
-        model.addAttribute("username", SecurityUserUtils.getSecurityUser().getUsername());
+        model.addAttribute("username", SecurityUserUtils.getSecurityUser().getFullname());
         return "index";
     }
 
@@ -86,21 +89,21 @@ public class BaseController {
 
     @RequestMapping("/file/download/{fileName}")
     public void download(HttpServletResponse response, @PathVariable(name = "fileName") String fileName) throws FileNotFoundException {
+        try {
         File file = new File("C:\\upload\\" + fileName);
         FileInputStream fileInputStream = new FileInputStream(file);
         // 设置被下载而不是被打开
         response.setContentType("application/gorce-download");
         // 设置被第三方工具打开,设置下载的文件名
         response.addHeader("Content-disposition", "attachment;fileName=" + fileName);
-        try {
             OutputStream outputStream = response.getOutputStream();
             byte[] bytes = new byte[1024];
             int len = 0;
             while ((len = fileInputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, len);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("文件丢失");
         }
     }
 

@@ -29,4 +29,7 @@ public interface IUserService {
     List<UserEntity> findByOrgId(List<Integer> integers);
 
     UserEntity update(UserEntity userEntity);
+
+    UserEntity save(UserEntity userEntity);
+
 }

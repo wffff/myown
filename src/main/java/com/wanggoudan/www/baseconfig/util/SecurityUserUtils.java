@@ -1,6 +1,7 @@
 package com.wanggoudan.www.baseconfig.util;
 
 import com.wanggoudan.www.baseconfig.UserException;
+import com.wanggoudan.www.entity.QQUser;
 import com.wanggoudan.www.entity.UserEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

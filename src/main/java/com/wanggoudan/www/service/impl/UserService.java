@@ -1,6 +1,7 @@
 package com.wanggoudan.www.service.impl;
 
 import com.wanggoudan.www.baseconfig.BasePage;
+import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
 import com.wanggoudan.www.entity.PermissionEntity;
 import com.wanggoudan.www.entity.RoleEntity;
 import com.wanggoudan.www.entity.UserEntity;
@@ -147,6 +148,11 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public UserEntity update(UserEntity userEntity) {
         return iUserRepository.update(userEntity);
+    }
+
+    @Override
+    public UserEntity save(UserEntity userEntity) {
+        return iUserRepository.save(userEntity);
     }
 
 }

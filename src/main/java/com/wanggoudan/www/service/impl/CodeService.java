@@ -5,6 +5,7 @@ import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
 import com.wanggoudan.www.entity.CodeEntity;
 import com.wanggoudan.www.repository.ICodeRepository;
 import com.wanggoudan.www.service.ICodeService;
+import com.wanggoudan.www.service.IUserService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class CodeService implements ICodeService {
 
     @Resource
     private ICodeRepository iCodeRepository;
+    @Resource
+    private IUserService iUserService;
 
     @Override
     public Page<CodeEntity> page(BasePage basePage,String title) {

@@ -6,7 +6,7 @@ create table t_user
 (
   id        INTEGER PRIMARY KEY     DEFAULT NEXTVAL('t_user_id_seq'),
   username varchar(100)   unique                                       not null,
-  password varchar(100)                                         not null,
+  password varchar(100)                                         ,
   mobile   varchar(20),
   email    varchar(50),
   fullname     varchar(50),

@@ -13,7 +13,9 @@ import java.util.List;
  */
 public interface IUserRepository extends BaseRepository<UserEntity, Integer> {
     UserEntity findByUsernameAndDelFalse(String username);
+
     Page<UserEntity> findAllByDelFalse(Pageable pageable);
+
     @Query("from UserEntity where del=false and organizationId in ?1")
     List<UserEntity> findByOrgId(List<Integer> orgIds);
 

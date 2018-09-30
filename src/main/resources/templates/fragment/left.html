@@ -5,9 +5,9 @@
     <div class="layui-side-scroll">
         <ul class="layui-nav layui-nav-tree"  lay-filter="test">
             <li class="layui-nav-item">
-                <a sec:authorize="hasAuthority('ROLE_CODE_MANAGE')" class="" href="javascript:;">代码记录</a>
+                <a  class="" href="javascript:;">代码记录</a>
                 <dl class="layui-nav-child">
-                    <dd><a sec:authorize="hasAuthority('ROLE_CODE_MANAGE')" th:href="@{/main?page=code/main}">代码</a></dd>
+                    <dd><a th:href="@{/main?page=code/main}">代码</a></dd>
                     <!--<dd><a sec:authorize="hasAuthority('ROLE_USER_ADD')" th:href="@{/main?page=user/register}">注册</a></dd>-->
                 </dl>
             </li>

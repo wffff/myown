@@ -1,18 +1,21 @@
 package com.wanggoudan.www.controller;
 
+import com.wanggoudan.www.baseconfig.BasePage;
 import com.wanggoudan.www.baseconfig.ReturnMessage;
-import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
 import com.wanggoudan.www.entity.RoleEntity;
 import com.wanggoudan.www.entity.UserEntity;
 import com.wanggoudan.www.service.IRoleService;
 import com.wanggoudan.www.service.IUserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("role")
@@ -30,16 +33,11 @@ public class RoleController {
         return ReturnMessage.success(0, r);
     }
 
-    @RequestMapping("list")
+    @RequestMapping("page")
     @ResponseBody
-    public ReturnMessage<List<RoleEntity>> list() {
-        List<RoleEntity> r;
-        if (SecurityUserUtils.isAdmin()) {
-            r = iRoleService.findAll();
-        } else {
-           return ReturnMessage.success();
-        }
-        return ReturnMessage.success(r.size(), r);
+    public ReturnMessage<List<RoleEntity>> page(BasePage basePage) {
+        Page<RoleEntity> all = iRoleService.page(basePage);
+        return ReturnMessage.success((int) all.getTotalElements(), all.getContent());
     }
 
     @RequestMapping("findAll")

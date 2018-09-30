@@ -1,5 +1,6 @@
 package com.wanggoudan.www.service.impl;
 
+import com.wanggoudan.www.baseconfig.BasePage;
 import com.wanggoudan.www.baseconfig.IBaseNativeSqlRepository;
 import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
 import com.wanggoudan.www.entity.PermissionEntity;
@@ -35,8 +36,8 @@ public class RoleService implements IRoleService {
         return save;
     }
 
-    public Page<RoleEntity> page(Integer page, Integer limit) {
-        return iRoleRepository.findAllByDelFalse(PageRequest.of(page - 1, limit));
+    public Page<RoleEntity> page(BasePage basePage) {
+        return iRoleRepository.findAllByDelFalse(basePage.getRequestPage());
     }
 
     @Override

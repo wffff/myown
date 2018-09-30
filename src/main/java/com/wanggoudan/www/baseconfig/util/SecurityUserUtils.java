@@ -35,13 +35,4 @@ public class SecurityUserUtils {
         UserEntity securityUser = getSecurityUser();
         return securityUser.getId();
     }
-
-    public static boolean isAdmin(){
-        Integer userId = getUserId();
-        if (userId.equals(1)){
-            return true;
-        }else {
-            return false;
-        }
-    }
 }

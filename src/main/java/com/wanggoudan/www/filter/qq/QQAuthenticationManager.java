@@ -58,7 +58,7 @@ public class QQAuthenticationManager implements AuthenticationManager {
         String resultText = document.text();
         JSONObject json = JSON.parseObject(resultText);
 
-        String url2=String.format("http://www.wanggoudan.cn/user/getInfo?username=%s&fullname=%s",openId,json.getString("nickname"));
+        String url2=String.format("http://www.wanggoudan.cn/user/getInfo?username=%s&fullname=%s&avatar=%s",openId,json.getString("nickname"),json.getString("figureurl_qq_2"));
         try {
             document = Jsoup.connect(url2).ignoreContentType(true).get();
         } catch (IOException e) {
@@ -72,6 +72,7 @@ public class QQAuthenticationManager implements AuthenticationManager {
         user.setUsername(json2.getString("username"));
         user.setFullname(json2.getString("fullname"));
         user.setId(json2.getInteger("id"));
+        user.setAvatar(json2.getString("avatar"));
         JSONArray authorities=json2.getJSONArray("authorities");
         for (int i=0;i<authorities.size();i++) {
             Map m = (Map) authorities.get(i);

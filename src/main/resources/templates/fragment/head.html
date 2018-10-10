@@ -20,33 +20,14 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img th:src="@{/static/adminlte/dist/img/user1-128x128.jpg}" class="user-image" alt="User Image">
-                        <span class="hidden-xs">王峰</span>
+                        <span class="form-inline" th:text="${username}"></span>
+                        <img th:src="${avatar}" class="user-image" alt="User Image">
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img th:src="@{/static/adminlte/dist/img/user1-128x128.jpg}" class="img-circle" alt="User Image">
-
-                            <p>
-                                王峰-JAVA开发
-                                <small>闲着没事开发的</small>
-                            </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="row">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">用户</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">角色</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">权限</a>
-                                </div>
-                            </div>
-                            <!-- /.row -->
+                            <img th:src="${avatar}" class="img-circle" alt="User Image">
+                            <p th:text="${username}"></p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">

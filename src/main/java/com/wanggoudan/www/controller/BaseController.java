@@ -1,5 +1,6 @@
 package com.wanggoudan.www.controller;
 
+import com.wanggoudan.www.baseconfig.util.RegexUtils;
 import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
 import com.wanggoudan.www.service.IUploadService;
 import com.wanggoudan.www.service.IUserService;
@@ -50,6 +51,11 @@ public class BaseController {
         if (null != detailId) {
             model.addAttribute("detailId", detailId);
         }
+        String img=SecurityUserUtils.getSecurityUser().getAvatar();
+        if (!RegexUtils.notNull(img)){
+            img="/static/adminlte/dist/img/user1-128x128.jpg";
+        }
+        model.addAttribute("avatar",img);
         model.addAttribute("username", SecurityUserUtils.getSecurityUser().getFullname());
         return "index";
     }
@@ -85,26 +91,6 @@ public class BaseController {
             throws IllegalStateException, IOException {
         Map m = iUploadService.uploadImg(file);
         return m;
-    }
-
-    @RequestMapping("/file/download/{fileName}")
-    public void download(HttpServletResponse response, @PathVariable(name = "fileName") String fileName) throws FileNotFoundException {
-        try {
-        File file = new File("C:\\upload\\" + fileName);
-        FileInputStream fileInputStream = new FileInputStream(file);
-        // 设置被下载而不是被打开
-        response.setContentType("application/gorce-download");
-        // 设置被第三方工具打开,设置下载的文件名
-        response.addHeader("Content-disposition", "attachment;fileName=" + fileName);
-            OutputStream outputStream = response.getOutputStream();
-            byte[] bytes = new byte[1024];
-            int len = 0;
-            while ((len = fileInputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, len);
-            }
-        } catch (Exception e) {
-            System.out.println("文件丢失");
-        }
     }
 
 }

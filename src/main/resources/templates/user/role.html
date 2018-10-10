@@ -55,6 +55,24 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="roleGrantForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">权限分配</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="rolePermission" class="table table-bordered table-striped">
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <section class="content-header">
         <h1>
             角色
@@ -64,6 +82,7 @@
             <button type="button" class="btn-primary" onclick="add()">创建</button>
             <button type="button" class="btn-primary" onclick="update()">修改</button>
             <button type="button" class="btn-primary" onclick="del()">删除</button>
+            <button type="button" class="btn-primary" onclick="grant()">分配权限</button>
         </div>
         <!--<ol class="breadcrumb">-->
         <!--<li><i class="fa fa-dashboard"></i> 代码记录</li>-->
@@ -252,6 +271,88 @@
                     }
                 });
             });
+        }
+        function grant() {
+            var data = $('#role').bootstrapTable('getSelections');
+            if (data.length != 1) {
+                toastr.warning("必须选中一条记录");
+            } else {
+                $("#rolePermission").bootstrapTable('destroy');
+                $('#rolePermission')
+                    .bootstrapTable(
+                        {
+                            method: 'get', // 服务器数据的请求方式 get or post
+                            url: '/permission/findAll', // 服务器数据的加载地址
+                            cache: false,
+                            striped: true, // 设置为true会有隔行变色效果
+                            dataType: "json", // 服务器返回的数据类型
+                            queryParams: function () {
+                                return {
+                                    id: data[0].id
+                                };
+                            },
+                            columns: [
+                                {
+                                    field: 'id',
+                                    title: 'id'
+                                },
+                                {
+                                    field: 'name',
+                                    title: '权限名'
+                                },
+                                {
+                                    field: 'description',
+                                    title: '权限描述'
+                                },
+                                {
+                                    field: 'enabled',
+                                    title: '是否授权',
+                                    formatter: function (value, row, index) {
+                                        var a=row.id;
+                                        if (value) {
+                                            return '<input value='+a+' id="create-switch" type="checkbox" name="my-checkbox1" checked>';
+                                        } else {
+                                            return '<input value='+a+' id="create-switch" type="checkbox" name="my-checkbox1" check>';
+                                        }
+                                    }
+                                }
+                            ]
+                            ,
+                            onLoadSuccess: function () {  //加载成功时执行
+                                $("[name='my-checkbox1']").bootstrapSwitch({
+                                    onText: "已授权",
+                                    offText: "未授权",
+                                    onColor: "success",
+                                    offColor: "normal",
+                                    onSwitchChange: function (event, state) {
+                                        $.ajax({
+                                            url: '/permission/grant',
+                                            data: {
+                                                roleId: data[0].id,
+                                                grant:state,
+                                                permissionId: this.value
+                                            },
+                                            success: function (res) {
+                                                if (res.code >= 0) {
+                                                    if (state){
+                                                        toastr.success('已授权');
+                                                    } else {
+                                                        toastr.warning('已取消授权');
+                                                    }
+                                                } else {
+                                                    toastr.error("系统异常");
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            },
+                            onLoadError: function () {  //加载失败时执行
+                                // console.info("加载数据失败");
+                            }
+                        });
+                $("#roleGrantForm").modal();
+            }
         }
     </script>
 </div>

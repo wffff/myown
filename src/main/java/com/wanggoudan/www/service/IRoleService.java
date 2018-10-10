@@ -17,7 +17,7 @@ public interface IRoleService {
 
     List<RoleEntity> findAll();
 
-    void delete(Integer id);
+    void delete(List<Integer> id);
 
     RoleEntity edit(Integer id, String name, String description);
 

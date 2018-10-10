@@ -105,6 +105,9 @@
                     },
                     onLoadError: function () {  //加载失败时执行
                         // console.info("加载数据失败");
+                    },
+                    onDblClickRow: function (row) {
+                        window.location.href = "/main?page=code/edit&detailId=" + row.id;
                     }
                 });
 

@@ -30,6 +30,17 @@
                     <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_PERMISSION')" th:href="@{/main?page=user/permission }"><i class="fa fa-circle-o"></i>权限</a></li>
                 </ul>
             </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-laptop"></i> <span>个人中心</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a th:href="@{/main?page=avatar/main}"><i class="fa fa-circle-o"></i>头像设置</a></li>
+                </ul>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

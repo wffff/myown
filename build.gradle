@@ -56,6 +56,10 @@ dependencies {
             "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleafExtrasVersion}",
             "org.postgresql:postgresql:${postgresqlVersion}",
             "org.mongodb:mongo-java-driver:${mongodbVERSION}",
+            compile('com.qcloud:cos_api:5.2.4') {
+                exclude module: 'slf4j-log4j12'
+            },
+            compile('com.qcloud:qcloud-java-sdk:2.0.1')
     )
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')

@@ -49,7 +49,7 @@ public class UserService implements IUserService, UserDetailsService {
                     }
                 }
             }
-            return new UserEntity(user.getId(), user.getUsername(), user.getPassword(), user.getFullname(), grantedAuthorities);
+            return new UserEntity(user.getId(),user.getAvatar(), user.getUsername(), user.getPassword(), user.getFullname(), grantedAuthorities);
         } else {
             throw new UsernameNotFoundException("admin: " + s + " do not exist!");
         }
@@ -113,17 +113,8 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void delete(Integer id) {
-        UserEntity u = iUserRepository.findById(id).get();
-        Set<RoleEntity> roles = u.getRole();
-        List<RoleEntity> all = iRoleService.findAll();
-        for (RoleEntity r : all) {
-            if (roles.contains(r)) {
-                u.getRole().remove(r);
-            }
-        }
-        u.setDel(true);
-        iUserRepository.save(u);
+    public void delete(List<Integer> id) {
+        iUserRepository.removeAll(id);
     }
 
     @Override
@@ -140,11 +131,6 @@ public class UserService implements IUserService, UserDetailsService {
         }
         u.setFullname(fullname);
         return iUserRepository.save(u);
-    }
-
-    @Override
-    public List<UserEntity> findByOrgId(List<Integer> integers) {
-        return iUserRepository.findByOrgId(integers);
     }
 
     @Override

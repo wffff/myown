@@ -22,6 +22,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String mobile;
     private String email;
     private String fullname;
+    private String avatar;
     @Transient
     private Set<GrantedAuthority> authorities;
     private Boolean enabled=true;
@@ -41,14 +42,22 @@ public class UserEntity extends BaseEntity implements UserDetails {
     public UserEntity() {
     }
 
-    public UserEntity(Integer id, String username, String password,String fullname, Set<GrantedAuthority> grantedAuthorities) {
+    public UserEntity(Integer id,String avatar, String username, String password,String fullname, Set<GrantedAuthority> grantedAuthorities) {
         super.id=id;
+        this.avatar=avatar;
         this.username=username;
         this.password=password;
         this.fullname=fullname;
         this.authorities=grantedAuthorities;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getMobile() {
         return mobile;

@@ -3,7 +3,9 @@ package com.wanggoudan.www.controller;
 
 import com.wanggoudan.www.baseconfig.BasePage;
 import com.wanggoudan.www.baseconfig.ReturnMessage;
+import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
 import com.wanggoudan.www.entity.UserEntity;
+import com.wanggoudan.www.service.IUploadService;
 import com.wanggoudan.www.service.IUserService;
 import com.wanggoudan.www.service.impl.UserService;
 import org.springframework.data.domain.Page;
@@ -12,10 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("user")
@@ -25,15 +29,27 @@ public class UserController {
     private IUserService iUserService;
     @Resource
     private UserService userService;
+    @Resource
+    private IUploadService iUploadService;
 
+    @RequestMapping("change/avatar")
+    @ResponseBody
+    public ReturnMessage<UserEntity> changeAvatar(MultipartFile file) {
+        Map m = iUploadService.uploadImg(file);
+        UserEntity u=iUserService.findOne(SecurityUserUtils.getUserId());
+        u.setAvatar((String) m.get("url"));
+        iUserService.save(u);
+        return ReturnMessage.success(0, u);
+    }
     @RequestMapping("getInfo")
     @ResponseBody
-    public UserEntity getInfo(String username,String fullname){
+    public UserEntity getInfo(String username,String fullname,String avatar){
         UserEntity byUsername = iUserService.findByUsername(username);
         if (byUsername==null){
             UserEntity userEntity=new UserEntity();
             userEntity.setUsername(username);
             userEntity.setFullname(fullname);
+            userEntity.setAvatar(avatar);
             byUsername= iUserService.save(userEntity);
         }
         byUsername=userService.loadUserByUsername(byUsername.getUsername());
@@ -70,12 +86,7 @@ public class UserController {
     @RequestMapping("delete")
     @ResponseBody
     public ReturnMessage delete(@RequestParam("id") List<Integer> ids) {
-        Iterator it = ids.iterator();
-        while (it.hasNext()) {
-            Integer id = (Integer) it.next();
-
-            iUserService.delete(id);
-        }
+            iUserService.delete(ids);
         return ReturnMessage.success();
     }
 

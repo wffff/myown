@@ -64,21 +64,8 @@ public class RoleService implements IRoleService {
     }
 
     @Override
-    public void delete(Integer id) {
-        RoleEntity r = iRoleRepository.findOne(id);
-        Set<PermissionEntity> permissions = r.getPermission();
-        List<PermissionEntity> all = iPermissionService.findAll();
-        List<UserEntity> users = iUserService.findAll();
-        for (PermissionEntity p : all) {
-            if (permissions.contains(p)) {
-                r.getPermission().remove(p);
-            }
-        }
-        for (UserEntity u : users) {
-            u.getRole().remove(r);
-        }
-        r.setDel(true);
-        iRoleRepository.save(r);
+    public void delete(List<Integer> id) {
+        iRoleRepository.removeAll(id);
     }
 
     @Override

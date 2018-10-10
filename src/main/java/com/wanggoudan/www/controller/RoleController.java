@@ -68,11 +68,7 @@ public class RoleController {
     @RequestMapping("delete")
     @ResponseBody
     public ReturnMessage delete(@RequestParam("id") List<Integer> ids) {
-        Iterator it = ids.iterator();
-        while (it.hasNext()) {
-            Integer id = (Integer) it.next();
-            iRoleService.delete(id);
-        }
+            iRoleService.delete(ids);
         return ReturnMessage.success();
     }
 

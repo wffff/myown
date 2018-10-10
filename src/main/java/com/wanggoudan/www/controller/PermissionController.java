@@ -41,7 +41,7 @@ public class PermissionController {
 
     @RequestMapping("findAll")
     @ResponseBody
-    public ReturnMessage<List<PermissionEntity>> findAll(Integer id){
+    public List<PermissionEntity> findAll(Integer id){
         RoleEntity one = iRoleService.findOne(id);
         Set<PermissionEntity> permissionHas = one.getPermission();
         List<PermissionEntity> all = iPermissionService.findAll();
@@ -50,7 +50,7 @@ public class PermissionController {
                 p.setEnabled(true);
             }
         }
-        return ReturnMessage.success(all.size(),all);
+        return all;
     }
 
     @RequestMapping("grant")

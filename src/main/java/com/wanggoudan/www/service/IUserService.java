@@ -22,11 +22,9 @@ public interface IUserService {
     UserEntity findByUsername(String username);
 
     List<UserEntity> findAll();
-    void delete(Integer id);
+    void delete(List<Integer> id);
 
     UserEntity update(Integer id, String username, String password, String fullname);
-
-    List<UserEntity> findByOrgId(List<Integer> integers);
 
     UserEntity update(UserEntity userEntity);
 

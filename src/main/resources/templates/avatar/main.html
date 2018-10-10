@@ -21,6 +21,7 @@
         $("#f_upload").fileinput({
             language: 'zh', //设置语言
             uploadUrl:"/user/change/avatar", //上传的地址
+            allowedPreviewTypes: ['image'],
             allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
             uploadAsync: true, //默认异步上传
             showUpload:true, //是否显示上传按钮
@@ -37,7 +38,7 @@
         }).on("fileuploaded", function (event, data, previewId, index){
             $(event.target)
                 .fileinput('clear')
-                .fileinput('unlock')
+                .fileinput('unlock');
           toastr.success("头像更换成功,下次登录即可切换");
         });
     </script>

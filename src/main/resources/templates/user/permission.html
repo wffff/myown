@@ -1,199 +1,257 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>权限</title>
-</head>
-<body>
-<div   th:fragment="content">
-    <div class="layui-body" style="padding: 15px;">
-        <div class="layui-btn-group demoTable">
-            <button class="layui-btn" data-type="add">添加权限</button>
-            <button class="layui-btn" data-type="del">删除权限</button>
-        </div>
-        <table class="page-table" th:id="permissionAdd" th:attr="lay-filter='permissionAdd'"></table>
-    </div>
-    <div id="permission" style='display:none; '>
-        <div class="layui-form-item">
-            <div class="layui-inline" style="margin-top: 5px;">
-                <label class="layui-form-label">权限名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入权限名">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="modal fade" id="permissionAddForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">新增</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>权限名称</label>
+                        <input type="text" name="name" class="form-control" placeholder="请输入权限名称,以ROLE_开头">
+                    </div>
+                    <div class="form-group">
+                        <label>权限描述</label>
+                        <input type="text" name="description" class="form-control" placeholder="请输入权限描述">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" onclick="submit()" class="btn btn-primary" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                    </button>
                 </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">描述</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="description" autocomplete="off" class="layui-input" placeholder="请输入权限描述">
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-tab-content" style="margin-left: 160px">
-            <button style="padding:0 20px; " class="layui-btn layui-btn-normal layui-btn-small" data-type="save" >保存</button>
         </div>
     </div>
+    <div class="modal fade" id="permissionUpdateForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">新增</h4>
+                </div>
+                <input th:type="hidden" name="id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>权限名称</label>
+                        <input type="text" name="name" class="form-control" placeholder="请输入权限名称,以ROLE_开头">
+                    </div>
+                    <div class="form-group">
+                        <label>权限描述</label>
+                        <input type="text" name="description" class="form-control" placeholder="请输入权限描述">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" onclick="submitUpdate()" class="btn btn-primary" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="content-header">
+        <h1>
+            权限
+            <!--<small>advanced tables</small>-->
+        </h1>
+        <div>
+            <button type="button" class="btn-primary" onclick="add()">创建</button>
+            <button type="button" class="btn-primary" onclick="update()">修改</button>
+            <button type="button" class="btn-primary" onclick="del()">删除</button>
+        </div>
+        <!--<ol class="breadcrumb">-->
+        <!--<li><i class="fa fa-dashboard"></i> 代码记录</li>-->
+        <!--<li>代码</li>-->
+        <!--<li class="active">代码块</li>-->
+        <!--</ol>-->
+    </section>
 
-    <form id="permissionEdit" class="layui-form" action="" style='display:none; '>
-        <input type="hidden" name="id">
-        <div class="layui-form-item">
-            <div class="layui-inline" style="margin-top: 5px;">
-                <label class="layui-form-label">权限名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入权限名">
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <!--<div class="box-header">-->
+                    <!--<h3 class="box-title">数据</h3>-->
+                    <!--</div>-->
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="permission" class="table table-bordered table-striped">
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
                 </div>
+                <!-- /.box -->
             </div>
+            <!-- /.col -->
         </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">描述</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="description" autocomplete="off" class="layui-input" placeholder="请输入权限描述">
-                </div>
-            </div>
-        </div>
-        <div class="layui-tab-content" style="margin-left: 160px">
-            <button style="padding:0 20px; " class="layui-btn layui-btn-normal" lay-submit="" lay-filter="edit">保存
-            </button>
-        </div>
-    </form>
-    <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
-    </script>
+        <!-- /.row -->
+    </section>
     <script>
-        layui.use(['table','jquery','form'], function () {
-            var $ = layui.jquery;
-            var form = layui.form;
-            var table = layui.table;
-            //方法级渲染
-            table.render({
-                id: 'permissionAdd'
-                , elem: '#permissionAdd'
-                , url: '/permission/page'
-                ,toolbar: true
-                , cols: [
-                    [
-                        {checkbox: true, fixed: true}
-                        , {field: 'id', title: 'ID', width: 80}
-                        , {field: 'name', title: '权限', width: 200}
-                        , {field: 'description', title: '描述', width: 150}
-                        , {title: '操作',fixed: 'right', width: 150, toolbar:'#barDemo', align: 'center',}
+        $('#permission')
+            .bootstrapTable(
+                {
+                    method: 'get', // 服务器数据的请求方式 get or post
+                    url: '/permission/page', // 服务器数据的加载地址
+                    cache: false,
+                    toolbar: true,
+                    sortable: true,
+                    sortOrder: null,
+                    striped: true, // 设置为true会有隔行变色效果
+                    dataType: "json", // 服务器返回的数据类型
+                    pagination: true, // 设置为true会在底部显示分页条
+                    singleSelect: false, // 设置为true将禁止多选
+                    pageSize: 10, // 如果设置了分页，每页数据条数
+                    pageNumber: 1, // 如果设置了分布，首页页码
+                    pageList: [5, 10, 15, 20],
+                    sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者
+                    showColumns: true,
+                    showRefresh: true,
+                    clickToSelect: true,
+                    showExport: true,
+                    exportDataType: "selected",
+                    exportOptions: {
+                        ignoreColumn: [0]
+                    },
+                    queryParams: function (params) {
+                        return {
+                            // 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
+                            limit: params.limit,
+                            offset: params.offset,
+                            sort: params.sort,      //排序列名
+                            sortOrder: params.order //排位命令（desc，asc）
+                        };
+                    },
+                    // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
+                    // queryParamsType = 'limit' ,返回参数必须包含
+                    // limit, offset, search, sort, order 否则, 需要包含:
+                    // pageSize, pageNumber, searchText, sortName,
+                    // sortOrder.
+                    // 返回false将会终止请求
+                    columns: [
+                        {
+                            checkbox: true
+                        },
+                        {
+                            sortable: true,
+                            field: 'id',
+                            title: 'id'
+                        },
+                        {
+                            sortable: true,
+                            field: 'name',
+                            title: '权限名'
+                        },
+                        {
+                            sortable: true,
+                            field: 'description',
+                            title: '权限描述'
+                        }
                     ]
-                ]
-                , page: true
-                , height: 700
-            });
-            var active = {
-                add: function(){ //获取选中数据
-                    layer.open({
-                        type: 1,
-                        title: '增加权限',
-                        skin: 'layui-layer-attachment', //加上边框
-                        content: $('#permission'),
-                        shadeClose: true
-                        , area: ['500px', '350px']
-                    });
-                },
-
-                del: function () { //获取选中数目
-                    var checkStatus = table.checkStatus('permissionAdd')
-                        , data = checkStatus.data;
-                    var delList = [];
-                    data.forEach(function (n, i) {
-                        delList.push(n.id);
-                    });
-                    if (delList != '') {
-                        layer.confirm('确定删除所选项吗？', function (index) {
-                            $.ajax({
-                                url: '/permission/delete',
-                                type: 'post',
-                                dataType: 'json',
-                                data: "id=" + delList,
-                                success: function (data) {
-                                    if (data.code >= 0) {
-                                        layer.msg('删除成功');
-                                        table.reload('permissionAdd', {});//刷新表格数据
-                                    } else {
-                                        layer.msg('删除失败');
-                                    }
-                                },
-                                'error': function () {
-                                    layer.msg('系统错误');
-                                }
-                            })
-                        })
-                    } else {
-                        layer.msg("数量不为1")
-                    }
-                },
-
-                save: function () {
-                    $.ajax({
-                        url: '/permission/save',
-                        data: {
-                            name:$("#permission input[name='name']").val(),
-                            description:$("#permission input[name='description']").val()},
-                        method: 'POST',
-                        success: function (data) {
-                            if (data.code >= 0) {
-                                layer.closeAll();
-                                layer.msg("保存成功");
-                                table.reload('permissionAdd',{})
-                            } else {
-                                layer.msg(data.msg);
-                            }
-                        }
-                    });
-                }
-
-            };
-            table.on('tool(permissionAdd)', function (obj) {
-                var data = obj.data;
-                var layEvent = obj.event;
-                if (layEvent === 'edit') {
-                    $("#permissionEdit input[name='id']").val(data.id);
-                    $("#permissionEdit input[name='name']").val(data.name);
-                    $("#permissionEdit input[name='description']").val(data.description);
-                    layer.open({
-                        type: 1
-                        , title: ['编辑', 'font-size:18px;']
-                        , closeBtn: 1
-                        , area: ['450px', '300px']
-                        , maxmin: true  //最大最小化
-                        , content: $('#permissionEdit')
-                        , resize: true
-                        , shadeClose: true
-                    });
-                }
-
-            });
-            form.on("submit(edit)", function (data) {
-                $.ajax({
-                    url: '/permission/edit',
-                    method: 'POST',
-                    data: data.field,
-                    success: function (data) {
-                        if (data.code >= 0) {
-                            layer.closeAll();
-                            table.reload('permissionAdd',{})
-                            layer.msg(data.msg, {time: 1000});
-                        } else {
-                            layer.msg(data.msg);
-                        }
+                    ,
+                    onLoadSuccess: function () {  //加载成功时执行
+                        // console.info("加载成功");
+                    },
+                    onLoadError: function () {  //加载失败时执行
+                        // console.info("加载数据失败");
                     }
                 });
-                return false;
-            });
 
-            $('.layui-btn').on('click', function () {
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
+        function add() {
+            $('#permissionAddForm').modal();
+        }
+
+        function submit() {
+            $.ajax({
+                url: '/permission/save',
+                method: 'POST',
+                data: {
+                    name: $("#permissionAddForm input[name='name']").val(),
+                    description: $("#permissionAddForm input[name='description']").val(),
+                },
+                success: function (data) {
+                    if (data.code >= 0) {
+                        toastr.success(data.msg);
+                        $('#permission').bootstrapTable('refresh');
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("无此权限");
+                }
             });
-        });
+        }
+
+        function submitUpdate() {
+            $.ajax({
+                url: '/permission/update',
+                method: 'POST',
+                data: {
+                    id: $("#permissionUpdateForm input[name='id']").val(),
+                    name: $("#permissionUpdateForm input[name='name']").val(),
+                    description: $("#permissionUpdateForm input[name='description']").val(),
+                },
+                success: function (data) {
+                    if (data.code >= 0) {
+                        toastr.success(data.msg);
+                        $('#permission').bootstrapTable('refresh');
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("无此权限");
+                }
+            });
+        }
+
+        function update() {
+            var data = $('#permission').bootstrapTable('getSelections');
+            $.ajax({
+                url: '/permission/detail',
+                type: 'post',
+                data: {id: data[0].id},
+                success: function (data) {
+                    var d = data.rows;
+                    $("#permissionUpdateForm input[name='name']").val(d.name);
+                    $("#permissionUpdateForm input[name='description']").val(d.description);
+                    $("#permissionUpdateForm input[name='id']").val(d.id);
+                    $("#permissionUpdateForm").modal();
+                }
+            });
+        }
+
+        function del() {
+            var data = $('#permission').bootstrapTable('getSelections');
+            msgbox.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
+                if (!e) {
+                    return;
+                }
+                $.ajax({
+                    url: '/permission/delete',
+                    type: 'post',
+                    dataType: 'json',
+                    data: "id=" + data[0].id,
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            toastr.success('删除成功');
+                            $('#permission').bootstrapTable('refresh');
+                        } else {
+                            toastr.error('删除失败');
+                        }
+                    },
+                    error: function () {
+                        toastr.error('系统错误');
+                    }
+                });
+            });
+        }
     </script>
 </div>
-</body>
-</html>

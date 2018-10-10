@@ -1,7 +1,7 @@
 package com.wanggoudan.www.service.impl;
 
 import com.wanggoudan.www.baseconfig.BasePage;
-import com.wanggoudan.www.baseconfig.util.SecurityUserUtils;
+import com.wanggoudan.www.baseconfig.util.RegexUtils;
 import com.wanggoudan.www.entity.PermissionEntity;
 import com.wanggoudan.www.entity.RoleEntity;
 import com.wanggoudan.www.entity.UserEntity;
@@ -58,10 +58,10 @@ public class UserService implements IUserService, UserDetailsService {
     public UserEntity save(String username, String password, String fullname, Integer organizationId) {
 
         UserEntity u = iUserRepository.findByUsernameAndDelFalse(username);
-            u = new UserEntity();
-            u.setUsername(username);
-            u.setPassword(new BCryptPasswordEncoder().encode(password));
-            u.setFullname(fullname);
+        u = new UserEntity();
+        u.setUsername(username);
+        u.setPassword(new BCryptPasswordEncoder().encode(password));
+        u.setFullname(fullname);
         return iUserRepository.save(u);
     }
 
@@ -135,7 +135,9 @@ public class UserService implements IUserService, UserDetailsService {
             u = iUserRepository.findOne(id);
         }
         u.setUsername(username);
-        u.setPassword(new BCryptPasswordEncoder().encode(password));
+        if (RegexUtils.notNull(password)) {
+            u.setPassword(new BCryptPasswordEncoder().encode(password));
+        }
         u.setFullname(fullname);
         return iUserRepository.save(u);
     }

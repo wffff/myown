@@ -1,6 +1,8 @@
 package com.wanggoudan.www.baseconfig;
 
 
+import com.wanggoudan.www.entity.CodeEntity;
+
 import java.io.Serializable;
 
 /**
@@ -22,24 +24,25 @@ public class ReturnMessage<T> implements Serializable {
     /**
      * 分页总记录数
      */
-    private int count;
+    private int total;
     /**
      * data 返回数据信息
      */
-    private T data;
+    private T rows;
 
-    public ReturnMessage(int code, String msg, T data) {
+    public ReturnMessage(int code, String msg, T rows) {
         this.code = code;
         this.msg = msg;
-        this.data = data;
+        this.rows = rows;
     }
 
-    public ReturnMessage(int code, String msg, int count, T data) {
+    public ReturnMessage(int code, String msg, int total, T rows) {
         this.code = code;
         this.msg = msg;
-        this.count = count;
-        this.data = data;
+        this.total = total;
+        this.rows = rows;
     }
+
 
     public int getCode() {
         return code;
@@ -57,36 +60,39 @@ public class ReturnMessage<T> implements Serializable {
         this.msg = msg;
     }
 
-    public int getCount() {
-        return count;
+    public int getTotal() {
+        return total;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public T getData() {
-        return data;
+    public T getRows() {
+        return rows;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setRows(T rows) {
+        this.rows = rows;
     }
 
-    public static <V> ReturnMessage<V> message(int code, String msg, V data) {
-        return new ReturnMessage<>(code, msg, data);
+    public static <V> ReturnMessage<V> message(int code, String msg, V rows) {
+        return new ReturnMessage<>(code, msg, rows);
     }
 
-    public static <V> ReturnMessage<V> message(int code, String msg, int count, V data) {
-        return new ReturnMessage<>(code, msg, count, data);
+    public static <V> ReturnMessage<V> message(int code, String msg, int total, V rows) {
+        return new ReturnMessage<>(code, msg, total, rows);
     }
 
-    public static <V> ReturnMessage<V> success(String msg, V data) {
-        return new ReturnMessage<>(0, msg, data);
+    public static <V> ReturnMessage<V> success(String msg, V rows) {
+        return new ReturnMessage<>(0, msg, rows);
     }
 
-    public static <V> ReturnMessage<V> success(int count, V data) {
-        return new ReturnMessage<>(0, "", count, data);
+    public static <V> ReturnMessage<V> success(int total, V rows) {
+        return new ReturnMessage<>(0, "", total, rows);
+    }
+    public static <V> ReturnMessage<V> success(int total, V rows, String msg) {
+        return new ReturnMessage<>(0, msg, total, rows);
     }
 
     public static ReturnMessage success(String msg) {
@@ -97,12 +103,12 @@ public class ReturnMessage<T> implements Serializable {
         return new ReturnMessage<>(0, "", null);
     }
 
-    public static <V> ReturnMessage<V> failed(String msg, V data) {
-        return new ReturnMessage<>(-1, msg, data);
+    public static <V> ReturnMessage<V> failed(String msg, V rows) {
+        return new ReturnMessage<>(-1, msg, rows);
     }
 
-    public static <V> ReturnMessage<V> failed(V data) {
-        return new ReturnMessage<>(-1, "", data);
+    public static <V> ReturnMessage<V> failed(V rows) {
+        return new ReturnMessage<>(-1, "", rows);
     }
 
     public static ReturnMessage failed(String msg) {

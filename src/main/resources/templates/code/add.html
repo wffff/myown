@@ -1,55 +1,75 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="layui-body" style="padding: 15px;" th:fragment="content">
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>创建</legend>
-    </fieldset>
+<div th:fragment="content">
+    <!-- Content Wrapper. Contains page content -->
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            创建
+        </h1>
+        <div>
+            <button type="button" class="btn-primary" onclick="back()">返回</button>
+        </div>
+    </section>
 
-    <form th:id="codeForm" class="layui-form" action="">
-        <div class="layui-form-item">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题"
-                   class="layui-input">
-        </div>
-        <div class="layui-form-item">
-             <textarea name="code" id="code">
-            </textarea>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <button class="layui-btn" lay-submit="" lay-filter="codeSubmit">立即提交</button>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">正文</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" id="codeForm">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>标题</label>
+                                <input type="text" class="form-control" name="title"
+                                       placeholder="请输入标题">
+                            </div>
+                            <div class="form-group">
+                                  <textarea name="code" id="code"></textarea>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button onclick="sub()" type="button" class="btn btn-primary">提交</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
             </div>
         </div>
-    </form>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
     <script>
-        layui.use(['form', 'jquery'], function () {
-            var form = layui.form;
-            var $ = layui.jquery;
-
-            form.on('submit(codeSubmit)', function (data) {
-                $.ajax({
-                    url: '/code/save',
-                    type: 'post',
-                    data: {
-                        title: $("#codeForm input[name='title']").val(),
-                        content: CKEDITOR.instances.code.getData(),
-                    },
-                    success: function (data) {
-                        if (data.code >= 0) {
-                            window.location.href = "/main?page=code/main";
-                        }else {
-                            layer.msg(data.msg);
-                        }
-                    },
-                    error: function (e) {
+        function sub(){
+            $.ajax({
+                url: '/code/save',
+                type: 'post',
+                data: {
+                    title: $("#codeForm input[name='title']").val(),
+                    content: CKEDITOR.instances.code.getData(),
+                },
+                success: function (data) {
+                    if (data.code >= 0) {
+                        toastr.success(data.msg);
+                        window.location.href = "/main?page=code/main";
+                    }else {
+                        toastr.error(data.msg);
                     }
-                });
-                return false;
+                },
+                error: function (e) {
+                }
             });
-        });
+        }
         CKEDITOR.replace('code');
         CKEDITOR.config.image_previewText = ' ';
         CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
         CKEDITOR.config.language = 'zh-cn';
         CKEDITOR.config.height = '500px';
     </script>
-
 </div>

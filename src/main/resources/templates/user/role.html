@@ -1,270 +1,257 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>注册</title>
-</head>
-<body>
-
-<div  th:fragment="content">
-    <div class="layui-body" style="padding: 15px;">
-        <div class="layui-btn-group demoTable">
-            <button class="layui-btn" data-type="add">增加角色</button>
-            <button class="layui-btn" data-type="del">删除角色</button>
-            <button class="layui-btn" data-type="grant">分配权限</button>
-        </div>
-        <table class="page-table" th:id="roleAdd" th:attr="lay-filter='roleAdd'"></table>
-    </div>
-    <div id="role" style='display:none; '>
-        <div class="layui-form-item">
-            <div class="layui-inline" style="margin-top: 5px;">
-                <label class="layui-form-label">角色名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入用户名">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="modal fade" id="roleAddForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">新增</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>角色名称</label>
+                        <input type="text" name="name" class="form-control" placeholder="请输入角色名称,以ROLE_开头">
+                    </div>
+                    <div class="form-group">
+                        <label>角色描述</label>
+                        <input type="text" name="description" class="form-control" placeholder="请输入角色描述">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" onclick="submit()" class="btn btn-primary" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">描述</label>
-            <div class="layui-input-inline">
-                <input type="text" name="description" autocomplete="off" placeholder="请输入描述" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-tab-content" style="margin-left: 160px">
-            <button style="padding:0 20px; " class="layui-btn layui-btn-normal layui-btn-small" data-type="save">保存
-            </button>
-        </div>
     </div>
-
-    <form id="roleEdit" class="layui-form" action="" style='display:none; '>
-        <input type="hidden" name="id">
-        <div class="layui-form-item">
-            <div class="layui-inline" style="margin-top: 5px;">
-                <label class="layui-form-label">角色名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入用户名">
+    <div class="modal fade" id="roleUpdateForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">新增</h4>
+                </div>
+                <input th:type="hidden" name="id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>角色名称</label>
+                        <input type="text" name="name" class="form-control" placeholder="请输入角色名称,以ROLE_开头">
+                    </div>
+                    <div class="form-group">
+                        <label>角色描述</label>
+                        <input type="text" name="description" class="form-control" placeholder="请输入角色描述">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" onclick="submitUpdate()" class="btn btn-primary" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">描述</label>
-            <div class="layui-input-inline">
-                <input type="text" name="description" autocomplete="off" placeholder="请输入描述" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-tab-content" style="margin-left: 160px">
-            <button style="padding:0 20px; " class="layui-btn layui-btn-normal" lay-submit="" lay-filter="edit">保存
-            </button>
-        </div>
-    </form>
-
-    <div id="permissionForm" style='display:none; '>
-        <input type="hidden" id="permissionGrantId">
-        <!-- 怎么获得???? 通过$("#permissionGrantId").val(data[0].id)为其赋值，值为选中的角色的id-->
-        <table class="page-table" th:id="permission" th:attr="lay-filter='permission'"></table>
     </div>
+    <section class="content-header">
+        <h1>
+            角色
+            <!--<small>advanced tables</small>-->
+        </h1>
+        <div>
+            <button type="button" class="btn-primary" onclick="add()">创建</button>
+            <button type="button" class="btn-primary" onclick="update()">修改</button>
+            <button type="button" class="btn-primary" onclick="del()">删除</button>
+        </div>
+        <!--<ol class="breadcrumb">-->
+        <!--<li><i class="fa fa-dashboard"></i> 代码记录</li>-->
+        <!--<li>代码</li>-->
+        <!--<li class="active">代码块</li>-->
+        <!--</ol>-->
+    </section>
 
-    <script type="text/html" id="switchTpl">
-        <input type="checkbox" name="enabled" value="{{d.id}}" lay-skin="switch" lay-text="是|否"
-               lay-filter="grantBtn" {{ d.enabled
-               ? 'checked' : ''}} /><!-- d.enabled中的enabled指的是哪个??? d.id?是所选权限的id??-->
-    </script>
-    <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
-    </script>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <!--<div class="box-header">-->
+                    <!--<h3 class="box-title">数据</h3>-->
+                    <!--</div>-->
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="role" class="table table-bordered table-striped">
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
     <script>
-        layui.use(['table', 'jquery', 'form'], function () {
-            var $ = layui.jquery;
-            var form = layui.form;
-            var table = layui.table;
-            //方法级渲染
-            var active = {
-                add: function () { //获取选中数据
-                    layer.open({
-                        type: 1,
-                        title: '增加用户',
-                        skin: 'layui-layer-attachment', //加上边框
-                        content: $('#role'),
-                        shadeClose: true,
-                        area: ['500px', '350px']
-                    });
-                },
-                save: function () {
-                    $.ajax({
-                        url: '/role/save',
-                        data: {
-                            name: $("#role input[name='name']").val(),
-                            description: $("#role input[name='description']").val()
+        $('#role')
+            .bootstrapTable(
+                {
+                    method: 'get', // 服务器数据的请求方式 get or post
+                    url: '/role/page', // 服务器数据的加载地址
+                    cache: false,
+                    toolbar: true,
+                    sortable: true,
+                    sortOrder: null,
+                    striped: true, // 设置为true会有隔行变色效果
+                    dataType: "json", // 服务器返回的数据类型
+                    pagination: true, // 设置为true会在底部显示分页条
+                    singleSelect: false, // 设置为true将禁止多选
+                    pageSize: 10, // 如果设置了分页，每页数据条数
+                    pageNumber: 1, // 如果设置了分布，首页页码
+                    pageList: [5, 10, 15, 20],
+                    sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者
+                    showColumns: true,
+                    showRefresh: true,
+                    clickToSelect: true,
+                    showExport: true,
+                    exportDataType: "selected",
+                    exportOptions: {
+                        ignoreColumn: [0]
+                    },
+                    queryParams: function (params) {
+                        return {
+                            // 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
+                            limit: params.limit,
+                            offset: params.offset,
+                            sort: params.sort,      //排序列名
+                            sortOrder: params.order //排位命令（desc，asc）
+                        };
+                    },
+                    // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
+                    // queryParamsType = 'limit' ,返回参数必须包含
+                    // limit, offset, search, sort, order 否则, 需要包含:
+                    // pageSize, pageNumber, searchText, sortName,
+                    // sortOrder.
+                    // 返回false将会终止请求
+                    columns: [
+                        {
+                            checkbox: true
                         },
-                        method: 'POST',
-                        success: function (data) {
-                            if (data.code >= 0) {
-                                layer.closeAll();
-                                layer.msg("保存成功");
-                                table.reload('roleAdd', {})
-                            } else {
-                                layer.msg(data.msg);
-                            }
+                        {
+                            sortable: true,
+                            field: 'id',
+                            title: 'id'
+                        },
+                        {
+                            sortable: true,
+                            field: 'name',
+                            title: '角色名'
+                        },
+                        {
+                            sortable: true,
+                            field: 'description',
+                            title: '角色描述'
                         }
-                    });
-                },
-
-                del: function () { //获取选中数目
-                    var checkStatus = table.checkStatus('roleAdd')
-                        , data = checkStatus.data;
-                    var delList = [];
-                    data.forEach(function (n, i) {
-                        delList.push(n.id);
-                    });
-                    if (delList != '') {
-                        layer.confirm('确定删除所选项吗？', function (index) {
-                            $.ajax({
-                                url: '/role/delete',
-                                type: 'post',
-                                dataType: 'json',
-                                data: "id=" + delList,
-                                success: function (data) {
-                                    if (data.code >= 0) {
-                                        layer.msg('删除成功');
-                                        table.reload('roleAdd', {});//刷新表格数据
-                                    } else {
-                                        layer.msg('删除失败');
-                                    }
-                                },
-                                'error': function () {
-                                    layer.msg('系统错误');
-                                }
-                            })
-                        })
-                    } else {
-                        layer.msg("数量不为1")
-                    }
-                },
-
-
-                grant: function () {
-                    var checkStatus = table.checkStatus('roleAdd')//获取角色表中的选中的数据
-                        , data = checkStatus.data;
-                    //if (data.length == 1) {
-                    $("#permissionGrantId").val(data[0].id);//将角色表中选中的角色的id赋给id为permissionGrantId的元素
-                    layer.open({
-                        type: 1
-                        , title: ['分配权限', 'font-size:18px;']
-                        , closeBtn: 1
-                        , shadeClose: true
-                        , area: ['1200px', '700px']
-                        , maxmin: true  //最大最小化
-                        , id: 'LAY_layui_permissionForm' //设定一个id，防止重复弹出
-                        , content: $('#permissionForm')
-                        , resize: true
-                    });
-                    table.render({
-                        id: 'permission'
-                        , elem: '#permission'
-                        , url: '/permission/findAll'
-                        , where: {id: data[0].id}    //where的作用？
-                        , cols: [
-                            [
-                                //{checkbox: true, fixed: true}
-                                  {field: 'name', title: '权限名', width: 200}
-                                , {field: 'description', title: '描述', width: 150}
-                                , {field: 'enabled', title: '授权', width: 85, templet: '#switchTpl'}
-                            ]
-                        ]
-                        , height: 570
-                    });
-                    //}
-                }
-
-            };
-            table.render({
-                id: 'roleAdd'
-                , elem: '#roleAdd'
-                , url: '/role/page'
-                ,toolbar: true
-                , cols: [
-                    [
-                        {checkbox: true, fixed: true}
-                        //{type: 'radio'}
-                        , {field: 'id', title: 'ID', width: 80}
-                        , {field: 'name', title: '角色名', width: 200}
-                        , {field: 'description', title: '描述', width: 150}
-                        , {
-                        title: '操作',
-                        fixed: 'right',
-                        width: 150,
-                        toolbar:'#barDemo',
-                        align: 'center',
-                    }
                     ]
-                ]
-                , page: true
-                , height: 700
-            });
-            table.on('tool(roleAdd)', function (obj) {
-                var data = obj.data;
-                var layEvent = obj.event;
-                if (layEvent === 'edit') {
-                    $("#roleEdit input[name='id']").val(data.id);
-                    $("#roleEdit input[name='name']").val(data.name);
-                    $("#roleEdit input[name='description']").val(data.description);
-                    layer.open({
-                        type: 1
-                        , title: ['编辑', 'font-size:18px;']
-                        , closeBtn: 1
-                        , area: ['450px', '300px']
-                        , maxmin: true  //最大最小化
-                        , content: $('#roleEdit')
-                        , resize: true
-                        , shadeClose: true
-                    });
-                }
+                    ,
+                    onLoadSuccess: function () {  //加载成功时执行
+                        // console.info("加载成功");
+                    },
+                    onLoadError: function () {  //加载失败时执行
+                        // console.info("加载数据失败");
+                    }
+                });
 
+        function add() {
+            $('#roleAddForm').modal();
+        }
+
+        function submit() {
+            $.ajax({
+                url: '/role/save',
+                method: 'POST',
+                data: {
+                    name: $("#roleAddForm input[name='name']").val(),
+                    description: $("#roleAddForm input[name='description']").val(),
+                },
+                success: function (data) {
+                    if (data.code >= 0) {
+                        toastr.success(data.msg);
+                        $('#role').bootstrapTable('refresh');
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("无此权限");
+                }
             });
-            form.on("submit(edit)", function (data) {
+        }
+
+        function submitUpdate() {
+            $.ajax({
+                url: '/role/update',
+                method: 'POST',
+                data: {
+                    id: $("#roleUpdateForm input[name='id']").val(),
+                    name: $("#roleUpdateForm input[name='name']").val(),
+                    description: $("#roleUpdateForm input[name='description']").val(),
+                },
+                success: function (data) {
+                    if (data.code >= 0) {
+                        toastr.success(data.msg);
+                        $('#role').bootstrapTable('refresh');
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("无此权限");
+                }
+            });
+        }
+
+        function update() {
+            var data = $('#role').bootstrapTable('getSelections');
+            $.ajax({
+                url: '/role/detail',
+                type: 'post',
+                data: {id: data[0].id},
+                success: function (data) {
+                    var d = data.rows;
+                    $("#roleUpdateForm input[name='name']").val(d.name);
+                    $("#roleUpdateForm input[name='description']").val(d.description);
+                    $("#roleUpdateForm input[name='id']").val(d.id);
+                    $("#roleUpdateForm").modal();
+                }
+            });
+        }
+
+        function del() {
+            var data = $('#role').bootstrapTable('getSelections');
+            msgbox.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
+                if (!e) {
+                    return;
+                }
                 $.ajax({
-                    url: '/role/edit',
-                    method: 'POST',
-                    data: data.field,
+                    url: '/role/delete',
+                    type: 'post',
+                    dataType: 'json',
+                    data: "id=" + data[0].id,
                     success: function (data) {
                         if (data.code >= 0) {
-                            layer.closeAll();
-                            table.reload('roleAdd',{})
-                            layer.msg(data.msg, {time: 1000});
+                            toastr.success('删除成功');
+                            $('#role').bootstrapTable('refresh');
                         } else {
-                            layer.msg(data.msg);
+                            toastr.error('删除失败');
                         }
-                    }
-                });
-                return false;
-            });
-
-            form.on('switch(grantBtn)', function (obj) {
-                $.ajax({
-                    url: '/permission/grant',
-                    data: {
-                        roleId: $("#permissionGrantId").val(),
-                        grant: obj.elem.checked,  //???
-                        permissionId: this.value
                     },
-                    success: function (res) {
-                        if (res.code >= 0) {
-                            layer.tips('已' + (obj.elem.checked ? '' : '取消') + '授权',
-                                obj.othis, {zIndex: layer.zIndex});
-                        } else {
-                            layer.msg(res.msg, {zIndex: layer.zIndex})
-                        }
+                    error: function () {
+                        toastr.error('系统错误');
                     }
                 });
             });
-            $('.layui-btn').on('click', function () {
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
-            });
-        });
+        }
     </script>
 </div>
-</body>
-
-</html>

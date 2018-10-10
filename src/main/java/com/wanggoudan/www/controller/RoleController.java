@@ -30,7 +30,7 @@ public class RoleController {
     @ResponseBody
     public ReturnMessage<RoleEntity> save(String name, String description) {
         RoleEntity r = iRoleService.save(name, description);
-        return ReturnMessage.success(0, r);
+        return ReturnMessage.success(1, r,"保存成功");
     }
 
     @RequestMapping("page")
@@ -42,7 +42,7 @@ public class RoleController {
 
     @RequestMapping("findAll")
     @ResponseBody
-    public ReturnMessage<List<RoleEntity>> findAll(Integer id) {//当前id是用户id
+    public List<RoleEntity> findAll(Integer id) {//当前id是用户id
         UserEntity one = iUserService.findOne(id);
         Set<RoleEntity> roles = one.getRole();
         List<RoleEntity> all = iRoleService.findAll();
@@ -51,7 +51,7 @@ public class RoleController {
                 r.setEnabled(true);
             }
         }
-        return ReturnMessage.success(all.size(), all);
+        return all;
     }
 
     @RequestMapping("grant")
@@ -76,9 +76,9 @@ public class RoleController {
         return ReturnMessage.success();
     }
 
-    @RequestMapping("edit")
+    @RequestMapping("update")
     @ResponseBody
-    public ReturnMessage<RoleEntity> edit(Integer id, String name, String description) {
+    public ReturnMessage<RoleEntity> update(Integer id, String name, String description) {
         RoleEntity r = iRoleService.edit(id, name, description);
         if (r != null) {
             return ReturnMessage.success("角色编辑成功", r);
@@ -86,5 +86,17 @@ public class RoleController {
             return ReturnMessage.failed("编辑失败");
         }
     }
+
+    @RequestMapping("detail")
+    @ResponseBody
+    public ReturnMessage<RoleEntity> detail(Integer id) {
+        RoleEntity r = iRoleService.findOne(id);
+        if (r != null) {
+            return ReturnMessage.success(1,r,"查询成功");
+        } else {
+            return ReturnMessage.failed("查询角色失败");
+        }
+    }
+
 
 }

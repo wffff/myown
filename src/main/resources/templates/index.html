@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragment/header :: header"></head>
-<body class="layui-layout-body">
-<div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
         <div th:replace="fragment/head :: head"></div>
-    </div>
+    </header>
 
-    <div class="layui-side layui-bg-black">
+    <aside class="main-sidebar">
         <div th:replace="fragment/left :: left"></div>
-    </div>
+    </aside>
 
-    <div th:fragment="content">
+    <div class="content-wrapper" th:fragment="content">
         <div th:replace="${main} :: content">Page Content</div>
     </div>
 
-    <div class="layui-footer">
+    <footer class="main-footer">
         <div th:replace="fragment/foot :: foot"></div>
-    </div>
+    </footer>
 </div>
-<script>
-    // JavaScript代码区域
-    layui.use('element', function () {
-
-    });
-</script>
 </body>
 </html>

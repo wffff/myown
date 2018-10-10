@@ -1,5 +1,6 @@
 package com.wanggoudan.www.controller;
 
+import com.wanggoudan.www.baseconfig.BasePage;
 import com.wanggoudan.www.baseconfig.ReturnMessage;
 import com.wanggoudan.www.entity.PermissionEntity;
 import com.wanggoudan.www.entity.RoleEntity;
@@ -26,8 +27,8 @@ public class PermissionController {
     private IRoleService iRoleService;
     @RequestMapping("page")
     @ResponseBody
-    public ReturnMessage<List<PermissionEntity>> page(@RequestParam(value = "page",defaultValue = "1")Integer page,@RequestParam(value = "limit",defaultValue = "20")Integer limit){
-        Page<PermissionEntity> p =iPermissionService.page(page,limit);
+    public ReturnMessage<List<PermissionEntity>> page(BasePage basePage){
+        Page<PermissionEntity> p =iPermissionService.page(basePage);
         return ReturnMessage.success((int) p.getTotalElements(), p.getContent());
     }
 
@@ -74,14 +75,25 @@ public class PermissionController {
         return ReturnMessage.success();
     }
 
-    @RequestMapping("edit")
+    @RequestMapping("update")
     @ResponseBody
-    public ReturnMessage<PermissionEntity> edit(Integer id, String name, String description){
+    public ReturnMessage<PermissionEntity> update(Integer id, String name, String description){
         PermissionEntity p = iPermissionService.edit(id,name,description);
         if(p!=null){
             return ReturnMessage.success("权限编辑成功",p);
         }else {
             return ReturnMessage.failed("编辑失败");
+        }
+    }
+
+    @RequestMapping("detail")
+    @ResponseBody
+    public ReturnMessage<PermissionEntity> detail(Integer id) {
+        PermissionEntity p = iPermissionService.findOne(id);
+        if (p != null) {
+            return ReturnMessage.success(1,p,"查询成功");
+        } else {
+            return ReturnMessage.failed("查询权限失败");
         }
     }
 }

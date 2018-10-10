@@ -64,7 +64,7 @@ public class UserController {
     @ResponseBody
     public ReturnMessage<UserEntity> check(String username) {
         UserEntity u = iUserService.findByUsername(username);
-        return ReturnMessage.success(0, u);
+        return ReturnMessage.success(1, u);
     }
 
     @RequestMapping("delete")
@@ -79,7 +79,7 @@ public class UserController {
         return ReturnMessage.success();
     }
 
-    @RequestMapping("edit")
+    @RequestMapping("update")
     @ResponseBody
     public ReturnMessage<UserEntity> update(Integer id, String username, String password, String fullname) {
         UserEntity u = iUserService.update(id, username, password, fullname);
@@ -89,5 +89,16 @@ public class UserController {
             return ReturnMessage.failed("修改失败");
         }
     }
+    @RequestMapping("detail")
+    @ResponseBody
+    public ReturnMessage<UserEntity> detail(Integer id) {
+        UserEntity u = iUserService.findOne(id);
+        if (u != null) {
+            return ReturnMessage.success(1,u,"查询成功");
+        } else {
+            return ReturnMessage.failed("查询用户失败");
+        }
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.wanggoudan.www.service.impl;
 
+import com.wanggoudan.www.baseconfig.BasePage;
 import com.wanggoudan.www.entity.PermissionEntity;
 import com.wanggoudan.www.entity.RoleEntity;
 import com.wanggoudan.www.repository.IPermissionRepository;
@@ -20,8 +21,8 @@ public class PermissionService implements IPermissionService {
     @Resource
     private IRoleService iRoleService;
 
-    public Page<PermissionEntity> page(Integer page, Integer limit) {
-        return iPermissionRepository.findAllByDelFalse(PageRequest.of(page - 1, limit));
+    public Page<PermissionEntity> page(BasePage basePage) {
+        return iPermissionRepository.findAllByDelFalse(basePage.getRequestPage());
     }
 
     public PermissionEntity save(String name, String description) {

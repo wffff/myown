@@ -37,7 +37,7 @@ public class CodeController {
         }
         CodeEntity c = iCodeService.save(title, content);
         if (c != null) {
-            return ReturnMessage.success(0, c);
+            return ReturnMessage.success(0, c,"保存成功");
         } else {
             return ReturnMessage.failed("保存失败");
         }

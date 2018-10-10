@@ -17,6 +17,7 @@ import java.util.Set;
 @Table(name = "t_user")
 public class UserEntity extends BaseEntity implements UserDetails {
     private String username;
+    @JsonIgnore
     private String password;
     private String mobile;
     private String email;

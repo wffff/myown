@@ -2,30 +2,62 @@
 <html   xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <div th:fragment="head">
-    <a th:href="@{/main}"><div class="layui-logo">王狗蛋</div></a>
-    <!-- 头部区域（可配合layui已有的水平导航） -->
-    <!--<ul class="layui-nav layui-layout-left">-->
-        <!--&lt;!&ndash;<li class="layui-nav-item"><a href="">用户管理</a></li>&ndash;&gt;-->
-        <!--&lt;!&ndash;<li class="layui-nav-item"><a href="">角色管理</a></li>&ndash;&gt;-->
-        <!--&lt;!&ndash;<li class="layui-nav-item"><a href="">权限管理</a></li>&ndash;&gt;-->
-        <!--<li class="layui-nav-item">-->
-            <!--<a href="javascript:;">后台管理</a>-->
-            <!--<dl class="layui-nav-child">-->
-                <!--<dd><a th:href="@{/user/}">用户管理</a></dd>-->
-                <!--<dd><a href="">角色管理</a></dd>-->
-                <!--<dd><a href="">授权管理</a></dd>-->
-            <!--</dl>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <ul class="layui-nav layui-layout-right">
-        <li class="layui-nav-item">
-            <a href="javascript:;">
-                <p id="username" th:text="${username}"></p>
-            </a>
-            <dl class="layui-nav-child">
-            <dd><a th:href="@{/login?logout}">退出</a></dd>
-            </dl>
-        </li>
-    </ul>
+    <!-- Logo -->
+    <a th:href="@{/main}" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini">狗蛋</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg">王狗蛋</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img th:src="@{/static/adminlte/dist/img/user1-128x128.jpg}" class="user-image" alt="User Image">
+                        <span class="hidden-xs">王峰</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img th:src="@{/static/adminlte/dist/img/user1-128x128.jpg}" class="img-circle" alt="User Image">
+
+                            <p>
+                                王峰-JAVA开发
+                                <small>闲着没事开发的</small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">用户</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">角色</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">权限</a>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div>
+                                <a th:href="@{/login?logout}" class="btn btn-default btn-flat">登出</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
 </html>

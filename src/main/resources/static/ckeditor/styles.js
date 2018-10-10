@@ -25,7 +25,7 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Paragraph',		element: 'p' },
 	{ name: 'Heading 1',		element: 'h1' },
 	{ name: 'Heading 2',		element: 'h2' },
-	{ name: 'Heading 3',		element: 'h3' },
+	{ name: 'Heading bootstrap',		element: 'h3' },
 	{ name: 'Heading 4',		element: 'h4' },
 	{ name: 'Heading 5',		element: 'h5' },
 	{ name: 'Heading 6',		element: 'h6' },

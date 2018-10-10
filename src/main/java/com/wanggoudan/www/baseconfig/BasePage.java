@@ -13,24 +13,17 @@ import java.io.Serializable;
  */
 public class BasePage implements Serializable {
 
-    private Integer page;
+    private Integer offset;
     private Integer limit;
-    private Sort sort;
+    private Sort sorts;
     private Sort.Direction sortType;
-    private String sortProperty;
+    private String sort;
+    private String sortOrder;
     private PageRequest requestPage;
 
     public BasePage() {
-        this.page = WebConstants.DEF_PAGE;
+        this.offset = WebConstants.DEF_OFFSET;
         this.limit = WebConstants.DEF_SIZE;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
     }
 
     public Integer getLimit() {
@@ -41,12 +34,12 @@ public class BasePage implements Serializable {
         this.limit = limit;
     }
 
-    public Sort getSort() {
-        return sort;
+    public Sort getSorts() {
+        return sorts;
     }
 
-    public void setSort(Sort sort) {
-        this.sort = sort;
+    public void setSorts(Sort sorts) {
+        this.sorts = sorts;
     }
 
     public Sort.Direction getSortType() {
@@ -57,52 +50,45 @@ public class BasePage implements Serializable {
         this.sortType = sortType;
     }
 
-    public String getSortProperty() {
-        return sortProperty;
+    public String getSortOrder() {
+        return sortOrder;
     }
 
-    public void setSortProperty(String sortProperty) {
-        this.sortProperty = sortProperty;
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
     }
 
     public PageRequest getRequestPage() {
-        if (!RegexUtils.notNull(this.sortProperty)) this.sortProperty = "id";
-        if (this.sortType == null) this.sortType = Sort.Direction.DESC;
-        this.sort = Sort.by(this.sortType, StringUtils.underscoreName(this.sortProperty).toLowerCase());
-        return PageRequest.of(this.page - 1, this.limit, this.sort);
+        if (!RegexUtils.notNull(this.sort)) this.sort = "id";
+        if (this.sortOrder.equals("desc")) {
+            this.sortType = Sort.Direction.DESC;
+        }else if (this.sortOrder.equals("asc")){
+            this.sortType = Sort.Direction.ASC;
+        }else {
+            this.sortType = Sort.Direction.DESC;
+        }
+        this.sorts = Sort.by(this.sortType, StringUtils.underscoreName(this.sort).toLowerCase());
+        return PageRequest.of(this.offset/this.limit, this.limit, this.sorts);
     }
 
     public void setRequestPage(PageRequest requestPage) {
         this.requestPage = requestPage;
     }
 
-    @Override
-    public String toString() {
-        return "BasePageImpl{" +
-                "page=" + page +
-                ", limit=" + limit +
-                ", sort=" + sort +
-                ", requestPage=" + requestPage +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BasePage basePage = (BasePage) o;
-
-        if (page != basePage.page) return false;
-        if (limit != basePage.limit) return false;
-        return sort != null ? sort.equals(basePage.sort) : basePage.sort == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = page;
-        result = 31 * result + limit;
-        result = 31 * result + (sort != null ? sort.hashCode() : 0);
-        return result;
-    }
 }

@@ -1,25 +1,56 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
 <div th:fragment="left">
-    <div class="layui-side-scroll">
-        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-            <li class="layui-nav-item">
-                <a  class="" href="javascript:;">代码记录</a>
-                <dl class="layui-nav-child">
-                    <dd><a th:href="@{/main?page=code/main}">代码</a></dd>
-                    <!--<dd><a sec:authorize="hasAuthority('ROLE_USER_ADD')" th:href="@{/main?page=user/register}">注册</a></dd>-->
-                </dl>
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">菜单栏</li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-table"></i> <span>代码记录</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a th:href="@{/main?page=code/main}"><i class="fa fa-circle-o"></i>代码</a></li>
+                </ul>
             </li>
-            <li class="layui-nav-item">
-                <a sec:authorize="hasAuthority('ROLE_RESOURCE_MANAGE')" class="" href="javascript:;">权限管理</a>
-                <dl class="layui-nav-child">
-                    <dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_USER')" th:href="@{/main?page=user/register }">用户</a></dd>
-                    <dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_ROLE')" th:href="@{/main?page=user/role}">角色</a ></dd>
-                    <dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_PERMISSION')" th:href="@{/main?page=user/permission }">权限</a></dd>
-                </dl>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-table"></i> <span>权限管理</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_USER')" th:href="@{/main?page=user/user }"><i class="fa fa-circle-o"></i>用户</a></li>
+                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_ROLE')" th:href="@{/main?page=user/role}"><i class="fa fa-circle-o"></i>角色</a></li>
+                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_PERMISSION')" th:href="@{/main?page=user/permission }"><i class="fa fa-circle-o"></i>权限</a></li>
+                </ul>
             </li>
         </ul>
-    </div>
+    </section>
+    <!-- /.sidebar -->
+    <!--<div class="layui-side-scroll">-->
+        <!--<ul class="layui-nav layui-nav-tree"  lay-filter="test">-->
+            <!--<li class="layui-nav-item">-->
+                <!--<a  class="" href="javascript:;">代码记录</a>-->
+                <!--<dl class="layui-nav-child">-->
+                    <!--<dd><a th:href="@{/main?page=code/main}">代码</a></dd>-->
+                    <!--&lt;!&ndash;<dd><a sec:authorize="hasAuthority('ROLE_USER_ADD')" th:href="@{/main?page=user/register}">注册</a></dd>&ndash;&gt;-->
+                <!--</dl>-->
+            <!--</li>-->
+            <!--<li class="layui-nav-item">-->
+                <!--<a sec:authorize="hasAuthority('ROLE_RESOURCE_MANAGE')" class="" href="javascript:;">权限管理</a>-->
+                <!--<dl class="layui-nav-child">-->
+                    <!--<dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_USER')" th:href="@{/main?page=user/register }">用户</a></dd>-->
+                    <!--<dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_ROLE')" th:href="@{/main?page=user/role}">角色</a ></dd>-->
+                    <!--<dd><a sec:authorize="hasAuthority('ROLE_RESOURCE_PERMISSION')" th:href="@{/main?page=user/permission }">权限</a></dd>-->
+                <!--</dl>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
 </div>
 </html>

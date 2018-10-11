@@ -59,7 +59,7 @@ public class UserController {
     @ResponseBody
     public ReturnMessage<UserEntity> save(String username, String password, String fullname, Integer organizationId) {
         UserEntity u = iUserService.save(username, password, fullname, organizationId);
-        return ReturnMessage.success(0, u);
+        return ReturnMessage.success(0, u,"保存成功");
     }
 
     @RequestMapping("saveNew")

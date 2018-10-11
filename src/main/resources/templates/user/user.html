@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+>
 <head th:replace="fragment/header :: header"></head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -192,6 +192,15 @@
                                 field: 'fullname',
                                 title: '昵称'
                             },
+                            {
+                                filed: 'avatar',
+                                title: '头像',
+                                formatter: function (value, row, index) {
+                                    if (row.avatar != null) {
+                                        return '<img src=' + row.avatar + '  class="user-image" height="200" width="200">';
+                                    }
+                                }
+                            }
                         ]
                         ,
                         onLoadSuccess: function () {  //加载成功时执行

@@ -55,7 +55,6 @@ dependencies {
             "org.springframework.boot:spring-boot-starter-web-services:${springBootVersion}",
             "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleafExtrasVersion}",
             "org.postgresql:postgresql:${postgresqlVersion}",
-            "org.mongodb:mongo-java-driver:${mongodbVERSION}",
             compile('com.qcloud:cos_api:5.2.4') {
                 exclude module: 'slf4j-log4j12'
             },

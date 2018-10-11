@@ -25,7 +25,10 @@ public class RoleController {
     @Resource
     private IUserService iUserService;
 
-
+    @RequestMapping("role")
+    public String role(){
+        return "user/role";
+    }
     @RequestMapping("save")
     @ResponseBody
     public ReturnMessage<RoleEntity> save(String name, String description) {

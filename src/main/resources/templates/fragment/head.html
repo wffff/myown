@@ -5,9 +5,9 @@
     <!-- Logo -->
     <a th:href="@{/main}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">狗蛋</span>
+        <span class="logo-mini">606</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">王狗蛋</span>
+        <span class="logo-lg">606宿舍</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -20,14 +20,14 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="form-inline" th:text="${username}"></span>
-                        <img th:src="${avatar}" class="user-image" alt="User Image">
+                        <span class="form-inline" th:text="${#authentication.Principal.fullname}"></span>
+                        <img th:src="${#authentication.Principal.avatar}" class="user-image">
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img th:src="${avatar}" class="img-circle" alt="User Image">
-                            <p th:text="${username}"></p>
+                            <img th:src="${#authentication.Principal.avatar}" class="img-circle">
+                            <p th:text="${#authentication.Principal.fullname}"></p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">

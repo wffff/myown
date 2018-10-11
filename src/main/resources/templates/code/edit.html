@@ -1,5 +1,16 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<div th:fragment="content">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragment/header :: header"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <div th:replace="fragment/head :: head"></div>
+    </header>
+    <aside class="main-sidebar">
+        <div th:replace="fragment/left :: left"></div>
+    </aside>
+    <div class="content-wrapper">
     <section class="content-header">
         <h1>
             查看
@@ -19,17 +30,17 @@
                         <h3 class="box-title">正文</h3>
                     </div>
                     <!-- /.box-header -->
-                    <input type="hidden" id="id" th:value="${detailId}">
+                    <input type="hidden" id="id" th:value="${code.id}">
                     <!-- form start -->
                     <form role="form" id="codeForm">
                         <div class="box-body">
                             <div class="form-group">
                                 <label>标题</label>
                                 <input type="text" class="form-control" name="title"
-                                       placeholder="请输入标题">
+                                       placeholder="请输入标题" th:value="${code.title}">
                             </div>
                             <div class="form-group">
-                                <textarea name="code" id="code"></textarea>
+                                <textarea name="code" id="code" th:text="${code.content}"></textarea>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -47,20 +58,6 @@
     </section>
     <script>
         $(function () {
-            $.ajax({
-                url: '/code/detail',
-                data: {id: $('#id').val()},
-                method: 'POST',
-                success: function (data) {
-                    var d = data.rows;
-                    if (data.code >= 0) {
-                        $("#codeForm input[name='title']").val(d.title);
-                        CKEDITOR.instances.code.setData(d.content);
-                    } else {
-                        toastr.warning(data.msg);
-                    }
-                }
-            });
             CKEDITOR.replace('code');
             CKEDITOR.config.image_previewText = ' ';
             CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
@@ -78,13 +75,19 @@
                 },
                 success: function (data) {
                     if (data.code >= 0) {
-                        window.location.href = "/main?page=code/main";
+                       toastr.success(data.msg);
                     } else {
-                        layer.msg(data.msg);
+                       toastr.error(data.msg);
                     }
                 }
             });
         }
     </script>
 
+    </div>
+    <footer class="main-footer">
+        <div th:replace="fragment/foot :: foot"></div>
+    </footer>
 </div>
+</body>
+</html>

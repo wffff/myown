@@ -25,6 +25,10 @@ public class PermissionController {
     private IPermissionService iPermissionService;
     @Resource
     private IRoleService iRoleService;
+    @RequestMapping("permission")
+    public String permission(){
+        return "user/permission";
+    }
     @RequestMapping("page")
     @ResponseBody
     public ReturnMessage<List<PermissionEntity>> page(BasePage basePage){

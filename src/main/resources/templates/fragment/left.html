@@ -6,7 +6,7 @@
     <section class="sidebar">
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">菜单栏</li>
-            <li class="treeview">
+            <li class="treeview active">
                 <a href="#">
                     <i class="fa fa-table"></i> <span>代码记录</span>
                     <span class="pull-right-container">
@@ -14,10 +14,10 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a th:href="@{/main?page=code/main}"><i class="fa fa-circle-o"></i>代码</a></li>
+                    <li><a th:href="@{/code/main}"><i class="fa fa-circle-o"></i>代码</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview active">
                 <a href="#">
                     <i class="fa fa-table"></i> <span>权限管理</span>
                     <span class="pull-right-container">
@@ -25,12 +25,12 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_USER')" th:href="@{/main?page=user/user }"><i class="fa fa-circle-o"></i>用户</a></li>
-                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_ROLE')" th:href="@{/main?page=user/role}"><i class="fa fa-circle-o"></i>角色</a></li>
-                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_PERMISSION')" th:href="@{/main?page=user/permission }"><i class="fa fa-circle-o"></i>权限</a></li>
+                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_USER')" th:href="@{/user/user }"><i class="fa fa-circle-o"></i>用户</a></li>
+                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_ROLE')" th:href="@{/role/role}"><i class="fa fa-circle-o"></i>角色</a></li>
+                    <li><a sec:authorize="hasAuthority('ROLE_RESOURCE_PERMISSION')" th:href="@{/permission/permission }"><i class="fa fa-circle-o"></i>权限</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview active">
                 <a href="#">
                     <i class="fa fa-laptop"></i> <span>个人中心</span>
                     <span class="pull-right-container">
@@ -38,7 +38,7 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a th:href="@{/main?page=avatar/main}"><i class="fa fa-circle-o"></i>头像设置</a></li>
+                    <li><a th:href="@{/user/avatar}"><i class="fa fa-circle-o"></i>头像设置</a></li>
                 </ul>
             </li>
         </ul>

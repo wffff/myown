@@ -32,6 +32,14 @@ public class UserController {
     @Resource
     private IUploadService iUploadService;
 
+    @RequestMapping("user")
+    public String user(){
+        return "user/user";
+    }
+    @RequestMapping("avatar")
+    public String avatar(){
+        return "avatar/main";
+    }
     @RequestMapping("change/avatar")
     @ResponseBody
     public ReturnMessage<UserEntity> changeAvatar(MultipartFile file) {

@@ -7,6 +7,7 @@ import com.wanggoudan.www.entity.CodeEntity;
 import com.wanggoudan.www.service.ICodeService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,6 +23,20 @@ public class CodeController {
     @Resource
     private ICodeService iCodeService;
 
+    @RequestMapping("main")
+    public String main(){
+        return "code/main";
+    }
+    @RequestMapping("add")
+    public String add(){
+        return "code/add";
+    }
+    @RequestMapping("edit")
+    public String edit(Model model, Integer id){
+        CodeEntity byId = iCodeService.findById(id);
+        model.addAttribute("code",byId);
+        return "code/edit";
+    }
     @RequestMapping("page")
     @ResponseBody
     public ReturnMessage<List<CodeEntity>> page(BasePage basePage, String title) {
@@ -51,7 +66,7 @@ public class CodeController {
         }
         CodeEntity c = iCodeService.update(id, title, content);
         if (c != null) {
-            return ReturnMessage.success(0, c);
+            return ReturnMessage.success(0, c,"编辑成功");
         } else {
             return ReturnMessage.failed("修改失败");
         }

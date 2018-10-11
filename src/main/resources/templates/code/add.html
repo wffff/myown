@@ -1,5 +1,16 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="content">
+<head th:replace="fragment/header :: header"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <div th:replace="fragment/head :: head"></div>
+    </header>
+    <aside class="main-sidebar">
+        <div th:replace="fragment/left :: left"></div>
+    </aside>
+    <div class="content-wrapper">
     <!-- Content Wrapper. Contains page content -->
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -75,3 +86,9 @@
         });
     </script>
 </div>
+<footer class="main-footer">
+    <div th:replace="fragment/foot :: foot"></div>
+</footer>
+</div>
+</body>
+</html>

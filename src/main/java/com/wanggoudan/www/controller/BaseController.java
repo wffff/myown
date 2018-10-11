@@ -37,26 +37,6 @@ public class BaseController {
 
     @RequestMapping("/")
     public String index() {
-        return "home";
-    }
-
-
-    @RequestMapping("/main")
-    public String home(@RequestParam(value = "page", required = false) String page, Model model, HttpServletRequest request, Principal principal, Integer detailId) {
-        if (page != null) {
-            model.addAttribute("main", page);
-        } else {
-            model.addAttribute("main", "main");
-        }
-        if (null != detailId) {
-            model.addAttribute("detailId", detailId);
-        }
-        String img=SecurityUserUtils.getSecurityUser().getAvatar();
-        if (!RegexUtils.notNull(img)){
-            img="/static/adminlte/dist/img/user1-128x128.jpg";
-        }
-        model.addAttribute("avatar",img);
-        model.addAttribute("username", SecurityUserUtils.getSecurityUser().getFullname());
         return "index";
     }
 

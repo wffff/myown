@@ -1,5 +1,16 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="content">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragment/header :: header"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <div th:replace="fragment/head :: head"></div>
+    </header>
+    <aside class="main-sidebar">
+        <div th:replace="fragment/left :: left"></div>
+    </aside>
+    <div class="content-wrapper">
     <section class="content-header">
         <h1>
             头像设置
@@ -42,4 +53,10 @@
           toastr.success("头像更换成功,下次登录即可切换");
         });
     </script>
+    </div>
+    <footer class="main-footer">
+        <div th:replace="fragment/foot :: foot"></div>
+    </footer>
 </div>
+</body>
+</html>

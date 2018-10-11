@@ -66,10 +66,12 @@
                 }
             });
         }
-        CKEDITOR.replace('code');
-        CKEDITOR.config.image_previewText = ' ';
-        CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
-        CKEDITOR.config.language = 'zh-cn';
-        CKEDITOR.config.height = '500px';
+        $(function () {
+            CKEDITOR.replace('code');
+            CKEDITOR.config.image_previewText = ' ';
+            CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
+            CKEDITOR.config.language = 'zh-cn';
+            CKEDITOR.config.height = '500px';
+        });
     </script>
 </div>

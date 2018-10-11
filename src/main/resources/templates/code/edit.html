@@ -34,7 +34,9 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button  sec:authorize="hasAuthority('ROLE_CODE_UPDATE')" onclick="sub()" type="button" class="btn btn-primary">提交</button>
+                            <button sec:authorize="hasAuthority('ROLE_CODE_UPDATE')" onclick="sub()" type="button"
+                                    class="btn btn-primary">提交
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -44,22 +46,27 @@
         <!-- /.row -->
     </section>
     <script>
-
-        $.ajax({
-            url: '/code/detail',
-            data: {id: $('#id').val()},
-            method: 'POST',
-            success: function (data) {
-                var d = data.rows;
-                if (data.code >= 0) {
-                    $("#codeForm input[name='title']").val(d.title);
-                    CKEDITOR.instances.code.setData(d.content);
-                } else {
-                    toastr.warning(data.msg);
+        $(function () {
+            $.ajax({
+                url: '/code/detail',
+                data: {id: $('#id').val()},
+                method: 'POST',
+                success: function (data) {
+                    var d = data.rows;
+                    if (data.code >= 0) {
+                        $("#codeForm input[name='title']").val(d.title);
+                        CKEDITOR.instances.code.setData(d.content);
+                    } else {
+                        toastr.warning(data.msg);
+                    }
                 }
-            }
+            });
+            CKEDITOR.replace('code');
+            CKEDITOR.config.image_previewText = ' ';
+            CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
+            CKEDITOR.config.language = 'zh-cn';
+            CKEDITOR.config.height = '500px';
         });
-
         function sub() {
             $.ajax({
                 url: '/code/update',
@@ -78,12 +85,6 @@
                 }
             });
         }
-
-        CKEDITOR.replace('code');
-        CKEDITOR.config.image_previewText = ' ';
-        CKEDITOR.config.filebrowserImageUploadUrl = '/uploadImg';
-        CKEDITOR.config.language = 'zh-cn';
-        CKEDITOR.config.height = '500px';
     </script>
 
 </div>

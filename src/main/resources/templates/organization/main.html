@@ -63,11 +63,6 @@
             <div>
                 <button type="button" class="btn-primary" onclick="create()">新建</button>
             </div>
-            <!--<ol class="breadcrumb">-->
-            <!--<li><i class="fa fa-dashboard"></i> 代码记录</li>-->
-            <!--<li>代码</li>-->
-            <!--<li class="active">代码块</li>-->
-            <!--</ol>-->
         </section>
 
         <!-- Main content -->
@@ -75,10 +70,6 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <!--<div class="box-header">-->
-                        <!--<h3 class="box-title">数据</h3>-->
-                        <!--</div>-->
-                        <!-- /.box-header -->
                         <div class="box-body">
                             <input type="button" id="expandAllTree" value="展开所有" class="btn btn-normal"/>
                             <input type="button" id="collapseAllTree" value="折叠所有" class="btn btn-normal"/>
@@ -96,26 +87,12 @@
         <script>
             var $table = $('#organization');
             $table.bootstrapTable({
-                // class: 'table table-hover table-bordered',
                 url: '/organization/list',
-                // contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-                // data: data,
                 sidePagination: 'server',
                 pagination: false,
                 treeView: true,
                 treeId: "id",
                 treeField: "name",
-                // rowAttributes: function (row, index) {
-                //     return {
-                //         xx: index
-                //     };
-                // },
-                // queryParams: function (params) {
-                //     var param = {
-                //         roleId: 'xx'
-                //     };
-                //     return param;
-                // },
                 columns: [{
                     field: 'name',
                     title: '公司名',

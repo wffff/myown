@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+>
 <head th:replace="fragment/header :: header"></head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -102,12 +102,15 @@
                             {
                                 sortable: true,
                                 field: 'title',
-                                title: '标题'
+                                title: '标题',
+
+
                             },
                             {
                                 sortable: true,
                                 field: 'content',
-                                title: '内容'
+                                title: '内容',
+                                visible: false
                             }
                         ]
                         ,
@@ -117,11 +120,7 @@
                         onLoadError: function () {  //加载失败时执行
                             // console.info("加载数据失败");
                         },
-                        onDblClickRow: function (row) {
-                            window.location.href = "/code/edit?id=" + row.id;
-                        }
                     });
-
             function create() {
                 window.location.href = "/code/add";
             }

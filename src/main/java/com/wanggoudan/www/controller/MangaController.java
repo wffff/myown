@@ -76,4 +76,6 @@ public class MangaController {
         return "manga/search";
     }
 
+
+
 }

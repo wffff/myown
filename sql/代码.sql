@@ -38,3 +38,16 @@ create table t_manga_attach
 	last                          TIMESTAMP(0)            DEFAULT NULL,
 	time                          TIMESTAMP(0)   NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+DROP SEQUENCE IF EXISTS t_video_id_seq CASCADE;
+CREATE SEQUENCE t_video_id_seq;
+DROP TABLE IF EXISTS t_video CASCADE;
+create table t_video
+(
+  id        INTEGER PRIMARY KEY     DEFAULT NEXTVAL('t_video_id_seq'),
+  title varchar(50) not null ,
+  url varchar (500) not null ,
+  del                           BOOLEAN        NOT NULL DEFAULT FALSE,
+	last                          TIMESTAMP(0)            DEFAULT NULL,
+	time                          TIMESTAMP(0)   NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

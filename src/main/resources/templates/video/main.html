@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragment/header :: header"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <div th:replace="fragment/head :: head"></div>
+    </header>
+    <aside class="main-sidebar">
+        <div th:replace="fragment/left :: left"></div>
+    </aside>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                VIDEO
+                <!--<small>advanced tables</small>-->
+            </h1>
+            <div>
+                <button type="button" class="btn-primary" onclick="create()">创建</button>
+                <button type="button" class="btn-primary" onclick="search()">查看</button>
+            </div>
+            <!--<ol class="breadcrumb">-->
+            <!--<li><i class="fa fa-dashboard"></i> 代码记录</li>-->
+            <!--<li>代码</li>-->
+            <!--<li class="active">代码块</li>-->
+            <!--</ol>-->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <!--<div class="box-header">-->
+                        <!--<h3 class="box-title">数据</h3>-->
+                        <!--</div>-->
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="video" class="table table-bordered table-striped">
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <script>
+            var $table=$("#video");
+            $table
+                .bootstrapTable(
+                    {
+                        method: 'get', // 服务器数据的请求方式 get or post
+                        url: '/video/page', // 服务器数据的加载地址
+                        cache: false,
+                        toolbar: true,
+                        sortable: true,
+                        sortOrder: null,
+                        striped: true, // 设置为true会有隔行变色效果
+                        dataType: "json", // 服务器返回的数据类型
+                        pagination: true, // 设置为true会在底部显示分页条
+                        singleSelect: true, // 设置为true将禁止多选
+                        pageSize: 5, // 如果设置了分页，每页数据条数
+                        pageNumber: 1, // 如果设置了分布，首页页码
+                        pageList: [1, 2, 5, 10],
+                        sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者
+                        showColumns: true,
+                        showRefresh: true,
+                        clickToSelect: true,
+                        showExport: true,
+                        exportDataType: "selected",
+                        exportOptions: {
+                            ignoreColumn: [0]
+                        },
+                        queryParams: function (params) {
+                            return {
+                                // 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
+                                limit: params.limit,
+                                offset: params.offset,
+                                sort: params.sort,      //排序列名
+                                sortOrder: params.order //排位命令（desc，asc）
+                            };
+                        },
+                        columns: [
+                            {
+                                checkbox: true
+                            },
+                            {
+                                sortable: true,
+                                field: 'id',
+                                title: 'id'
+                            },
+                            {
+                                sortable: true,
+                                field: 'title',
+                                title: '标题',
+
+
+                            },
+                        ]
+                        ,
+                        onLoadSuccess: function () {  //加载成功时执行
+                            // console.info("加载成功");
+                        },
+                        onLoadError: function () {  //加载失败时执行
+                            // console.info("加载数据失败");
+                        },
+                    });
+            function create() {
+                window.location.href = "/video/add";
+            }
+
+            function search() {
+                var data = $table.bootstrapTable('getSelections');
+                window.location.href = "/video/search?id=" + data[0].id;
+            }
+
+        </script>
+    </div>
+    <footer class="main-footer">
+        <div th:replace="fragment/foot :: foot"></div>
+    </footer>
+</div>
+</body>
+</html>

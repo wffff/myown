@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragment/header :: header"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <div th:replace="fragment/head :: head"></div>
+    </header>
+    <aside class="main-sidebar">
+        <div th:replace="fragment/left :: left"></div>
+    </aside>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                VIDEO上传
+            </h1>
+            <div>
+                <button type="button" class="btn-primary" onclick="back()">返回</button>
+            </div>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>标题</label>
+                                <input type="text" class="form-control" id="title" name="title"
+                                       placeholder="请输入标题">
+                            </div>
+                            <div class="form-group">
+                                <label>视频</label>
+                                <input id="f_upload" name="file" accept="video/*" type="file" class="file" />
+                            </div>
+                            <div class="box-footer">
+                                <button onclick="sub()" type="button" class="btn btn-primary">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+            var url;
+            $("#f_upload").fileinput({
+                language: 'zh', //设置语言
+                uploadUrl:"/video/up", //上传的地址
+                uploadAsync: true, //默认异步上传
+                showUpload:true, //是否显示上传按钮
+                showRemove :true, //显示移除按钮
+                showPreview :true, //是否显示预览
+                showCaption:false,//是否显示标题
+                browseClass:"btn btn-primary", //按钮样式
+                dropZoneEnabled: false,//是否显示拖拽区域
+                maxFileCount:1, //表示允许同时上传的最大文件个数
+                enctype:'multipart/form-data',
+                validateInitialCount:true,
+                previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+                msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            }).on("fileuploaded", function (event, data, previewId, index){
+                url=data.response.msg;
+                toastr.success("上传成功");
+            });
+            function sub() {
+                $.ajax({
+                    url: '/video/save',
+                    method: 'POST',
+                    data: {
+                        title: $("#title").val(),
+                        url: url,
+                    },
+                    success: function (data) {
+                        if (data.code >= 0) {
+                            toastr.success(data.msg);
+                            setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                                window.location.href="/video/main";//页面刷新
+                            },1000);
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    },
+                });
+            }
+        </script>
+    </div>
+    <footer class="main-footer">
+        <div th:replace="fragment/foot :: foot"></div>
+    </footer>
+</div>
+</body>
+</html>

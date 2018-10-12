@@ -76,9 +76,9 @@ public class BasePage implements Serializable {
 
     public PageRequest getRequestPage() {
         if (!RegexUtils.notNull(this.sort)) this.sort = "id";
-        if (this.sortOrder.equals("desc")) {
+        if ("desc".equals(this.sortOrder)) {
             this.sortType = Sort.Direction.DESC;
-        }else if (this.sortOrder.equals("asc")){
+        }else if ("asc".equals(this.sortOrder)){
             this.sortType = Sort.Direction.ASC;
         }else {
             this.sortType = Sort.Direction.DESC;

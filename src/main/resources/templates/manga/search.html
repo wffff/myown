@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragment/header :: header"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <div th:replace="fragment/head :: head"></div>
+    </header>
+    <aside class="main-sidebar">
+        <div th:replace="fragment/left :: left"></div>
+    </aside>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                查看
+            </h1>
+            <div>
+                <button type="button" class="btn-primary" onclick="back()">返回</button>
+            </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                       <h3 class="panel-title" th:text="${manga.title}"></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div th:each="info,infoStat : ${manga.attach}">
+                            <div class="col-md-12">
+                                <img th:src="${info.url}" class="img-responsive">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <button type="button" class="btn-primary" onclick="back()">返回</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </section>
+        <script>
+            // var message = "[[${manga.attach[0].url}]] ";
+            // console.log(message);
+        </script>
+
+    </div>
+    <footer class="main-footer">
+        <div th:replace="fragment/foot :: foot"></div>
+    </footer>
+</div>
+</body>
+</html>

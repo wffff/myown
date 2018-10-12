@@ -68,7 +68,7 @@
                 success: function (data) {
                     if (data.code >= 0) {
                         toastr.success(data.msg);
-                        window.location.href = "/main?page=code/main";
+                        window.location.href = "/code/main";
                     }else {
                         toastr.error(data.msg);
                     }

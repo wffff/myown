@@ -45,7 +45,7 @@ public class UploadService implements IUploadService {
                 ObjectMetadata meta = new ObjectMetadata();
                 meta.setContentLength(inputStream.available());
                 if (inputStream != null) {
-                    String key = new Date().getTime() + file.getOriginalFilename();
+                    String key = new Date().getTime() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                     PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, inputStream, meta);
                     putObjectRequest.setStorageClass(StorageClass.Standard);
                     PutObjectResult putObjectResult = cosclient.putObject(putObjectRequest);

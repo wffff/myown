@@ -33,7 +33,7 @@
                             </div>
                             <div class="form-group">
                                 <label>内容</label>
-                                <input id="content" name="file" multiple type="file" class="file" data-show-caption="true"/>
+                                <input id="content" name="file" multiple type="file" class="file"/>
                             </div>
                             <div class="box-footer">
                                 <button onclick="sub()" type="button" class="btn btn-primary">保存</button>
@@ -75,10 +75,10 @@
                 uploadAsync: false, //默认异步上传
                 showUpload:true, //是否显示上传按钮
                 showRemove :true, //显示移除按钮
-                showPreview :true, //是否显示预览
                 showCaption:false,//是否显示标题
                 browseClass:"btn btn-primary", //按钮样式
                 dropZoneEnabled: false,//是否显示拖拽区域
+                showPreview:true,
                 maxFileCount:20, //表示允许同时上传的最大文件个数
                 enctype:'multipart/form-data',
                 validateInitialCount:true,
@@ -104,7 +104,7 @@
                             toastr.success(data.msg);
                             setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
                                 window.location.href="/manga/main";//页面刷新
-                            },2000);
+                            },1000);
                         } else {
                             toastr.error(data.msg);
                         }

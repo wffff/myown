@@ -29,7 +29,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="vid-wrap">
-                            <video autoplay  controls>
+                            <video id="v" autoplay  controls >
                                 <source th:src="${video.url}" >
                             </video>
                         </div>
@@ -42,8 +42,31 @@
             <!-- /.row -->
         </section>
         <script>
-            // var message = "[[${manga.attach[0].url}]] ";
-            // console.log(message);
+           Media = document.getElementById("v");
+           // var eventTester = function(e){
+           //     Media.addEventListener(e,function(){
+           //        window.location.href="http://www.baidu.com";
+           //     },false);
+           // };
+           $(function(){
+               $(document).keydown(function(e){
+                   var e = e || window.event;
+                   if(e.keyCode==32){
+                      if (Media.paused) {
+                          Media.play();
+                      }else {
+                          Media.pause();
+                      }
+                   }
+                   if (e.keyCode==37){
+                       Media.currentTime=Media.currentTime-5;
+                   }
+                   if (e.keyCode==39){
+                       Media.currentTime=Media.currentTime+5;
+                   }
+               });
+           });
+           // eventTester("ended");
         </script>
 
     </div>

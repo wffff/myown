@@ -32,7 +32,12 @@
                             </div>
                             <div class="form-group">
                                 <label>视频</label>
-                                <input id="f_upload" name="file" accept="video/*" type="file" class="file" />
+                                <input id="f_upload" name="file" accept="video/*" multiple type="file" class="file" />
+                            </div>
+                            <div class="form-group">
+                                <label>地址</label>
+                                <input type="text" class="form-control" id="address" name="address"
+                                       placeholder="可选择输入地址">
                             </div>
                             <div class="box-footer">
                                 <button onclick="sub()" type="button" class="btn btn-primary">保存</button>
@@ -43,7 +48,6 @@
             </div>
         </section>
         <script>
-            var url;
             $("#f_upload").fileinput({
                 language: 'zh', //设置语言
                 uploadUrl:"/video/up", //上传的地址
@@ -53,30 +57,32 @@
                 showPreview :true, //是否显示预览
                 showCaption:false,//是否显示标题
                 browseClass:"btn btn-primary", //按钮样式
-                dropZoneEnabled: false,//是否显示拖拽区域
-                maxFileCount:1, //表示允许同时上传的最大文件个数
+                dropZoneEnabled: true,//是否显示拖拽区域
+                maxFileCount:10, //表示允许同时上传的最大文件个数
                 enctype:'multipart/form-data',
                 validateInitialCount:true,
                 previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
                 msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
             }).on("fileuploaded", function (event, data, previewId, index){
-                url=data.response.msg;
-                toastr.success("上传成功");
+                var url=data.response.rows.url;
+                var fileName=data.response.rows.fileName;
+                sub(url,fileName);
             });
-            function sub() {
+            function sub(add,name) {
                 $.ajax({
                     url: '/video/save',
                     method: 'POST',
                     data: {
-                        title: $("#title").val(),
-                        url: url,
+                        title: $("#title").val()==""?name:$("#title").val(),
+                        url: add,
+                        address: $("#address").val(),
                     },
                     success: function (data) {
                         if (data.code >= 0) {
                             toastr.success(data.msg);
-                            setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
-                                window.location.href="/video/main";//页面刷新
-                            },1000);
+                            // setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                            //     window.location.href="/video/main";//页面刷新
+                            // },1000);
                         } else {
                             toastr.error(data.msg);
                         }

@@ -41,7 +41,9 @@ public class IOrganizationRepositoryImpl implements IOrganizationRepositoryCusto
         OrganizationDTO organizationDTO = new OrganizationDTO();
         organizationDTO.setIds(list);
         organizationDTO.setDel(false);
-        organizationDTO.setOrganizationType(List.of(OrganizationTypeEnum.DEVICE));
+        List<OrganizationTypeEnum> list1=new ArrayList();
+        list1.add(OrganizationTypeEnum.DEVICE);
+        organizationDTO.setOrganizationType(list1);
         return iOrganizationRepository.findAll(condition(organizationDTO));
     }
 }

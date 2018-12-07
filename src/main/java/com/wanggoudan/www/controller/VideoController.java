@@ -2,6 +2,7 @@ package com.wanggoudan.www.controller;
 
 import com.wanggoudan.www.baseconfig.BasePage;
 import com.wanggoudan.www.baseconfig.ReturnMessage;
+import com.wanggoudan.www.baseconfig.util.RegexUtils;
 import com.wanggoudan.www.entity.MangaEntity;
 import com.wanggoudan.www.entity.VideoEntity;
 import com.wanggoudan.www.service.IUploadService;
@@ -46,14 +47,17 @@ public class VideoController {
 
     @RequestMapping("up")
     @ResponseBody
-    public ReturnMessage changeAvatar(MultipartFile file) {
+    public ReturnMessage<Map> changeAvatar(MultipartFile file) {
         Map m = iUploadService.uploadImg(file);
-        return ReturnMessage.success(((String) m.get("url")));
+        return ReturnMessage.success(0,m);
     }
 
     @RequestMapping("save")
     @ResponseBody
-    public ReturnMessage<VideoEntity> save(String title, String url) {
+    public ReturnMessage<VideoEntity> save(String title, String url,String address) {
+        if (RegexUtils.notNull(address)&&!RegexUtils.notNull(url)){
+            url=address;
+        }
         VideoEntity save = iVideoService.save(title, url);
         return ReturnMessage.success("保存成功");
     }

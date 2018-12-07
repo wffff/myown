@@ -1,65 +1,87 @@
-buildscript {
-    ext {
-        springBootVersion = '2.0.4.RELEASE'
-        postgresqlVersion = '9.4.1212'
-        alibabaFastJsonVersion = '1.2.39'
-        jsoupVersion = '1.10.2'
-        springGradleVersion = '0.0.9.RELEASE'
-        javaxMailVersion = '1.4.1'
-        javaXmlBindVersion = '2.2.11'
-        springOauth2Version = '2.2.1.RELEASE'
-        commonLang = '3.7'
-        pinyin4jVersion = '2+'
-        thymeleafExtrasVersion = '3+'
-        nekohtmlVersion = '1.9.22'
-        alibabaDruidVersion = '1.1.9'
-        lombokVersion = '1.18.0'
-        mongodbVERSION = '3.2.2'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
-
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: 'idea'
 
 group = 'com.wanggoudan'
 version = '0.0.1'
-sourceCompatibility = 1.10
+sourceCompatibility = 1.8
+
+ext {
+    springBootVersion = '2.0.4.RELEASE'
+    postgresqlVersion = '9.4.1212'
+    alibabaFastJsonVersion = '1.2.39'
+    jsoupVersion = '1.10.2'
+    springGradleVersion = '0.0.9.RELEASE'
+    javaxMailVersion = '1.4.1'
+    javaXmlBindVersion = '2.2.11'
+    springOauth2Version = '2.2.1.RELEASE'
+    commonLang = '3.7'
+    pinyin4jVersion = '2+'
+    thymeleafExtrasVersion = '3+'
+    nekohtmlVersion = '1.9.22'
+    alibabaDruidVersion = '1.1.9'
+    lombokVersion = '1.18.0'
+    mongodbVERSION = '3.2.2'
+    profile = System.getProperty("env") ?: "dev"
+    println "[current profile]:" + profile
+}
 
 repositories {
     mavenCentral()
 }
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
 
 
 dependencies {
-    compile("org.glassfish.jaxb:jaxb-runtime:${javaXmlBindVersion}", //#解决因java9模块化产生的找不到类的异常
-            "org.glassfish.jaxb:jaxb-xjc:${javaXmlBindVersion}", //#解决因java9模块化产生的找不到类的异常
-            "org.glassfish.jaxb:jaxb-core:${javaXmlBindVersion}", //#解决因java9模块化产生的找不到类的异常
-            "org.jsoup:jsoup:${jsoupVersion}",
-            "com.alibaba:fastjson:${alibabaFastJsonVersion}",
-            "org.postgresql:postgresql:${postgresqlVersion}",
-            "org.apache.commons:commons-lang3:${commonLang}",
-            "com.belerweb:pinyin4j:${pinyin4jVersion}", // 中文拼音
-            "com.alibaba:druid-spring-boot-starter:${alibabaDruidVersion}",
-            "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}",
-            "org.springframework.boot:spring-boot-starter-security:${springBootVersion}",
-            "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
-            "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
-            "org.springframework.boot:spring-boot-starter-web-services:${springBootVersion}",
-            "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleafExtrasVersion}",
-            "org.postgresql:postgresql:${postgresqlVersion}",
-            compile('com.qcloud:cos_api:5.2.4') {
-                exclude module: 'slf4j-log4j12'
-            },
-            compile('com.qcloud:qcloud-java-sdk:2.0.1')
-    )
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.springframework.security:spring-security-test')
+    compile group: 'org.jsoup', name: 'jsoup', version: jsoupVersion
+    compile group: 'com.alibaba', name: 'fastjson', version: alibabaFastJsonVersion
+    compile group: 'org.postgresql', name: 'postgresql', version: postgresqlVersion
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: commonLang
+    compile group: 'com.belerweb', name: 'pinyin4j', version: pinyin4jVersion
+    compile group: 'com.alibaba', name: 'druid-spring-boot-starter', version: alibabaDruidVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: springBootVersion
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: thymeleafExtrasVersion
+    compile group: 'org.postgresql', name: 'postgresql', version: postgresqlVersion
+    compile(group: 'com.qcloud', name: 'cos_api', version: '5.2.4') {
+        exclude module: 'slf4j-log4j12'
+    }
+    compile group: 'com.qcloud', name: 'qcloud-java-sdk', version: '2.0.1'
 }
+
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources", "env/$profile"]
+        }
+    }
+}
+
+jar {
+    String someString = ''
+    configurations.runtime.each { someString = someString + " lib//" + it.name }
+    manifest {
+        attributes 'Main-Class': 'com.wanggoudan.WGDApplication'
+        attributes 'Class-Path': someString
+    }
+}
+//清除上次的编译过的文件
+task clearPj(type: Delete) {
+    delete 'build', 'target'
+}
+task copyJar(type: Copy) {
+    from configurations.runtime
+    into('build/libs/lib')
+}
+//把JAR复制到目标目录
+task release(type: Copy, dependsOn: [build, copyJar]) {
+// from 'conf'
+// into ('build/libs/eachend/conf') // 目标位置
+}
+

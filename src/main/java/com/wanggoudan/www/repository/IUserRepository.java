@@ -20,4 +20,7 @@ public interface IUserRepository extends BaseRepository<UserEntity, Integer> {
     List<UserEntity> findByOrgId(List<Integer> orgIds);
 
     List<UserEntity> findAllByDelFalse();
+
+    UserEntity findByXcxOpenIdAndDelFalse(String xcxOpenId);
+
 }

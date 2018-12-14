@@ -29,6 +29,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private Boolean expired=false;
     private Boolean locked=false;
     private Boolean limited=false;
+    private String xcxOpenId;
 
     //    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -135,5 +136,13 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     public void setAuthorities(Set<GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getXcxOpenId() {
+        return xcxOpenId;
+    }
+
+    public void setXcxOpenId(String xcxOpenId) {
+        this.xcxOpenId = xcxOpenId;
     }
 }

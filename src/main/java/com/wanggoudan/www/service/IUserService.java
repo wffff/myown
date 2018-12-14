@@ -30,4 +30,6 @@ public interface IUserService {
 
     UserEntity save(UserEntity userEntity);
 
+    UserEntity findByOpenId(String openId);
+
 }

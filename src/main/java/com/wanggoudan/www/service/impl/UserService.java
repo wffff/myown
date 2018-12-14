@@ -143,4 +143,9 @@ public class UserService implements IUserService, UserDetailsService {
         return iUserRepository.save(userEntity);
     }
 
+    @Override
+    public UserEntity findByOpenId(String openId) {
+        return iUserRepository.findByXcxOpenIdAndDelFalse(openId);
+    }
+
 }

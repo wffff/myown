@@ -57,7 +57,7 @@ server:
   servlet:
     context-path: /
   ssl:
-    key-store: c:\www.wanggoudan.cn.jks
+    key-store: classpath:www.wanggoudan.cn.jks
     key-store-password: Aa3800258
     key-store-type: JKS
     key-alias: www.wanggoudan.cn

@@ -5,7 +5,7 @@ spring:
     druid:
       url: jdbc:postgresql://118.25.193.38:5432/wanggoudan
       username: postgres
-      password: 123
+      password: Aa3800258
       driver-class-name: org.postgresql.Driver
       initial-size: 1
       max-active: 100
@@ -23,9 +23,8 @@ spring:
       ##################################################
       # Spring监控配置，配置_Druid和Spring关联监控配置
       aop-patterns: cn.wanggoudan.repository.*
-  http:
-
-
+  profiles:
+    active: dev
   mvc:
     static-path-pattern: /static/**
   thymeleaf:

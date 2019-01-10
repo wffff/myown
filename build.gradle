@@ -47,6 +47,8 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: springBootVersion
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: springBootVersion
+    compile group: 'org.projectlombok', name: 'lombok', version: lombokVersion
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: thymeleafExtrasVersion
     compile group: 'org.postgresql', name: 'postgresql', version: postgresqlVersion
     compile(group: 'com.qcloud', name: 'cos_api', version: '5.2.4') {

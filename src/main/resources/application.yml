@@ -1,6 +1,10 @@
 spring:
   cache:
     type: simple
+  data:
+    mongodb:
+      database: test
+      uri: mongodb://118.25.193.38:27017
   datasource:
     druid:
       url: jdbc:postgresql://118.25.193.38:5432/wanggoudan

@@ -8,6 +8,8 @@ import com.wanggoudan.www.entity.UserEntity;
 import com.wanggoudan.www.repository.IUserRepository;
 import com.wanggoudan.www.service.IRoleService;
 import com.wanggoudan.www.service.IUserService;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,11 +56,12 @@ public class UserService implements IUserService, UserDetailsService {
             throw new UsernameNotFoundException("admin: " + s + " do not exist!");
         }
     }
-
-    public UserEntity save(String username, String password, String fullname, Integer organizationId) {
+    @CachePut(cacheNames = "test", key = "#id")
+    public UserEntity save(Integer id,String username, String password, String fullname, Integer organizationId) {
 
         UserEntity u = iUserRepository.findByUsernameAndDelFalse(username);
         u = new UserEntity();
+        u.setId(id);
         u.setUsername(username);
         u.setPassword(new BCryptPasswordEncoder().encode(password));
         u.setFullname(fullname);
@@ -85,6 +88,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
+    @Cacheable(cacheNames = "test")
     public UserEntity findOne(Integer id) {
         return iUserRepository.findOne(id);
     }

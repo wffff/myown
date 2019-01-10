@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: simple
   datasource:
     druid:
       url: jdbc:postgresql://118.25.193.38:5432/wanggoudan
@@ -39,7 +41,7 @@ spring:
     # fix Hibernate Slow to Acquire Postgres Connection
     properties.hibernate.temp.use_jdbc_metadata_defaults: false
     properties.hibernate.jdbc.use_get_generated_keys: true
-    show-sql: false
+    show-sql: true
     hibernate.ddl-auto: none
     open-in-view: true
     properties:

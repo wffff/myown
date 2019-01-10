@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Danny on 2018/8/21.
  */
 public interface IUserService {
-    UserEntity save(String username, String password,String fullname,Integer organizationId);
+    UserEntity save(Integer id,String username, String password,String fullname,Integer organizationId);
 
     Page<UserEntity> page(BasePage basePage);
 
